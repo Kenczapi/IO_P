@@ -1,0 +1,15 @@
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\bin\Debug\Projekt_InzOpr.exe.config
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\bin\Debug\Projekt_InzOpr.exe
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\bin\Debug\Projekt_InzOpr.pdb
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\bin\Debug\Interop.WMPLib.dll
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\bin\Debug\AxInterop.WMPLib.dll
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csprojAssemblyReference.cache
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Interop.WMPLib.dll
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\AxInterop.WMPLib.dll
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.ResolveComReference.cache
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.Properties.Resources.resources
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.GenerateResource.cache
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.CoreCompileInputs.cache
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.exe
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.pdb
+E:\Repo\repo\Projekt_InzOpr\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.Okno.resources
