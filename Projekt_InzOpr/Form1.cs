@@ -18,7 +18,6 @@ namespace Projekt_InzOpr
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
-            
 
         }
 
@@ -35,13 +34,11 @@ namespace Projekt_InzOpr
                     string line = sr.ReadLine();
                     if (File.Exists(line)) //plik ktory chcemy otworzyc istnieje
                     {
-                        //MessageBox.Show(line);  //testing only
                         Player.URL = CurrentVideoPath = line;
-                        line = sr.ReadLine();
-                        //MessageBox.Show(line);
+                        line = sr.ReadLine();                  
                         Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
                         lATime.Text = Player.Ctlcontrols.currentPositionString;
-
+                        button1_Click(null, null);
                     }
                 }
             }
@@ -50,16 +47,27 @@ namespace Projekt_InzOpr
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (button1.Text == "Pause")
+            if(Player.playState == WMPLib.WMPPlayState.wmppsPlaying && button1.Text == "Play")
             {
-                Player.Ctlcontrols.pause();
-                button1.Text = "Play";
-            }
-            else
-            {
-                Player.Ctlcontrols.play();
                 button1.Text = "Pause";
+                return;
             }
+
+            if(Player.playState == WMPLib.WMPPlayState.wmppsPaused) //przycisk nacisniety gdy jest zapauzowane
+            {
+                button1.Text = "Pause";
+                Player.Ctlcontrols.play();
+            }
+            else if(Player.playState == WMPLib.WMPPlayState.wmppsPlaying) //przycisk nacisniety gdy cos leci
+            {
+                button1.Text = "Play";
+                Player.Ctlcontrols.pause();
+            }
+            else if(Player.playState == WMPLib.WMPPlayState.wmppsUndefined)
+            {
+                MessageBox.Show("undefined");
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -95,14 +103,6 @@ namespace Projekt_InzOpr
 
         }
 
-        private void buttonTime(object sender)
-        {
-            ///https://stackoverflow.com/questions/25864958/how-to-update-a-label-by-windows-media-player-current-position-live-without-usi
-            /// byc moze skorzystam z tego
-
-            (sender as Button).Text = "Current time:\n" + Player.Ctlcontrols.currentPositionString;
-        }
-
         private string CurrentVideoPath { get; set; }
 
 
@@ -116,18 +116,35 @@ namespace Projekt_InzOpr
             this.panel1.Visible = false;
         }
 
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            var clip = Player.newMedia(CurrentVideoPath); 
-            //this.button5.Text = Player.Ctlcontrols.currentPositionString;
-            this.button5.Text = TimeSpan.FromSeconds(clip.duration).ToString();
-
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             lATime.Text = Player.Ctlcontrols.currentPositionString;
+        }
+    }
+
+    //bedzie mi potrzebne do zrobienia historii ogladanych prawdopodobnie
+    public class HistoriaOgladania
+    {
+        string sciezka;
+        double czasZatrzymania;
+
+        public HistoriaOgladania()
+        {
+            this.sciezka = string.Empty;
+            this.czasZatrzymania = 0;
+        }
+
+        public HistoriaOgladania(string s, double c)
+        {
+            this.sciezka = s;
+            this.czasZatrzymania = c;
+        }
+
+        public override string ToString()
+        {
+            return (sciezka + "\n"
+                + czasZatrzymania
+                + "\n==END==\n");
         }
     }
 }
