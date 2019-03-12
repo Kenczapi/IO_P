@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Drawing2D;
 
 namespace Projekt_InzOpr
 {
@@ -17,17 +18,20 @@ namespace Projekt_InzOpr
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
+            
+
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
-            if(File.Exists(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt")) //istnieje pliczek
+
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt")) //istnieje pliczek
             {
                 //https://docs.microsoft.com/en-us/windows/desktop/wmp/wmplibiwmpcontrols-iwmpcontrols-currentposition--vb-and-c
                 //https://docs.microsoft.com/pl-pl/dotnet/api/system.io.streamreader?view=netframework-4.7.2
 
                 using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt")) //zeby bylo widoczne tylko lokalnie
-                {          
+                {
                     string line = sr.ReadLine();
                     if (File.Exists(line)) //plik ktory chcemy otworzyc istnieje
                     {
@@ -36,14 +40,17 @@ namespace Projekt_InzOpr
                         line = sr.ReadLine();
                         //MessageBox.Show(line);
                         Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
+                        lATime.Text = Player.Ctlcontrols.currentPositionString;
+
                     }
                 }
             }
+                
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(button1.Text == "Pause")
+            if (button1.Text == "Pause")
             {
                 Player.Ctlcontrols.pause();
                 button1.Text = "Play";
@@ -61,6 +68,9 @@ namespace Projekt_InzOpr
             {
                 CurrentVideoPath = openFileDialog1.FileName;
                 Player.URL = CurrentVideoPath;
+                var clip = Player.newMedia(CurrentVideoPath);
+                this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
+                timer1.Start();
             }
             else
                 return;
@@ -71,8 +81,8 @@ namespace Projekt_InzOpr
             // https://docs.microsoft.com/en-us/windows/desktop/wmp/player-playstate
 
             string jakiesInfo;
-            
-            if(Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
+
+            if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
                 jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
                 Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
@@ -82,7 +92,7 @@ namespace Projekt_InzOpr
             }
 
             this.Close();
-            
+
         }
 
         private void buttonTime(object sender)
@@ -94,6 +104,30 @@ namespace Projekt_InzOpr
         }
 
         private string CurrentVideoPath { get; set; }
-    }
 
+
+        private void panel2_MouseHover(object sender, EventArgs e)
+        {
+            this.panel1.Visible = true;
+        }
+
+        private void Player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
+        {
+            this.panel1.Visible = false;
+        }
+
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var clip = Player.newMedia(CurrentVideoPath); 
+            //this.button5.Text = Player.Ctlcontrols.currentPositionString;
+            this.button5.Text = TimeSpan.FromSeconds(clip.duration).ToString();
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            lATime.Text = Player.Ctlcontrols.currentPositionString;
+        }
+    }
 }
