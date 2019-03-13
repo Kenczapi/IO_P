@@ -36,17 +36,16 @@ namespace Projekt_InzOpr
             this.Player = new AxWMPLib.AxWindowsMediaPlayer();
             this.SelectingFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lTime = new System.Windows.Forms.Label();
+            this.lATime = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lATime = new System.Windows.Forms.Label();
-            this.lTime = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.panel1.SuspendLayout();
@@ -77,7 +76,6 @@ namespace Projekt_InzOpr
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lTime);
             this.panel1.Controls.Add(this.lATime);
-            this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button2);
@@ -89,15 +87,39 @@ namespace Projekt_InzOpr
             this.panel1.TabIndex = 1;
             this.panel1.Visible = false;
             // 
-            // button5
+            // trackBar1
             // 
-            this.button5.Location = new System.Drawing.Point(103, 17);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(128, 45);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Tutaj bedzie sie kiedys wyswietlal czas";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.trackBar1.Location = new System.Drawing.Point(258, 28);
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(721, 45);
+            this.trackBar1.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(1068, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(12, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "/";
+            // 
+            // lTime
+            // 
+            this.lTime.AutoSize = true;
+            this.lTime.Location = new System.Drawing.Point(1086, 28);
+            this.lTime.Name = "lTime";
+            this.lTime.Size = new System.Drawing.Size(35, 13);
+            this.lTime.TabIndex = 7;
+            this.lTime.Text = "label1";
+            // 
+            // lATime
+            // 
+            this.lATime.AutoSize = true;
+            this.lATime.Location = new System.Drawing.Point(1027, 28);
+            this.lATime.Name = "lATime";
+            this.lATime.Size = new System.Drawing.Size(35, 13);
+            this.lATime.TabIndex = 6;
+            this.lATime.Text = "label1";
             // 
             // button4
             // 
@@ -152,40 +174,6 @@ namespace Projekt_InzOpr
             this.panel2.TabIndex = 2;
             this.panel2.MouseHover += new System.EventHandler(this.panel2_MouseHover);
             // 
-            // lATime
-            // 
-            this.lATime.AutoSize = true;
-            this.lATime.Location = new System.Drawing.Point(1027, 28);
-            this.lATime.Name = "lATime";
-            this.lATime.Size = new System.Drawing.Size(35, 13);
-            this.lATime.TabIndex = 6;
-            this.lATime.Text = "label1";
-            // 
-            // lTime
-            // 
-            this.lTime.AutoSize = true;
-            this.lTime.Location = new System.Drawing.Point(1086, 28);
-            this.lTime.Name = "lTime";
-            this.lTime.Size = new System.Drawing.Size(35, 13);
-            this.lTime.TabIndex = 7;
-            this.lTime.Text = "label1";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1068, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(12, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "/";
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Location = new System.Drawing.Point(258, 28);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(721, 45);
-            this.trackBar1.TabIndex = 9;
-            // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
@@ -222,7 +210,6 @@ namespace Projekt_InzOpr
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button button5;
         private Panel panel2;
         private TrackBar trackBar1;
         private Label label1;
