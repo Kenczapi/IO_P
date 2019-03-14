@@ -14,17 +14,20 @@ namespace Projekt_InzOpr
 {
     public partial class Okno : Form
     {
+       
+        
         public Okno()
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
-            
 
+            
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
 
+            
             if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt")) //istnieje pliczek
             {
                 //https://docs.microsoft.com/en-us/windows/desktop/wmp/wmplibiwmpcontrols-iwmpcontrols-currentposition--vb-and-c
@@ -40,8 +43,8 @@ namespace Projekt_InzOpr
                         line = sr.ReadLine();
                         //MessageBox.Show(line);
                         Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
-                        lATime.Text = Player.Ctlcontrols.currentPositionString;
-
+                        trackBar2.Value = Player.settings.volume;
+                        czas();
                     }
                 }
             }
@@ -50,15 +53,17 @@ namespace Projekt_InzOpr
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (button1.Text == "Pause")
+            if (buttonPlay.Text == "Pause")
             {
                 Player.Ctlcontrols.pause();
-                button1.Text = "Play";
+                buttonPlay.Text = "Play";
+                timer1.Stop();
             }
             else
             {
                 Player.Ctlcontrols.play();
-                button1.Text = "Pause";
+                buttonPlay.Text = "Pause";
+                timer1.Start();
             }
         }
 
@@ -68,12 +73,18 @@ namespace Projekt_InzOpr
             {
                 CurrentVideoPath = openFileDialog1.FileName;
                 Player.URL = CurrentVideoPath;
-                var clip = Player.newMedia(CurrentVideoPath);
-                this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
-                timer1.Start();
+                czas();
             }
             else
                 return;
+        }
+
+        private void czas()
+        {
+            var clip = Player.newMedia(CurrentVideoPath);
+            this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
+            trackBar1.Maximum = (int)clip.duration+1;
+            timer1.Start();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -105,29 +116,58 @@ namespace Projekt_InzOpr
 
         private string CurrentVideoPath { get; set; }
 
-
-        private void panel2_MouseHover(object sender, EventArgs e)
-        {
-            this.panel1.Visible = true;
-        }
-
+        
         private void Player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
-            this.panel1.Visible = false;
+            if(!Player.fullScreen)
+            {
+                if (e.fY > Player.Height - panelSterowanie.Height)
+                {
+                    panelSterowanie.Visible = true;
+                }
+                else
+                {
+                    panelSterowanie.Visible = false;
+                    
+                }
+            }
+            else
+            {
+
+
+            }
+            
+            
         }
 
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            var clip = Player.newMedia(CurrentVideoPath); 
-            //this.button5.Text = Player.Ctlcontrols.currentPositionString;
-            this.button5.Text = TimeSpan.FromSeconds(clip.duration).ToString();
-
-        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            trackBar1.Value =(int)Player.Ctlcontrols.currentPosition;
+
+
             lATime.Text = Player.Ctlcontrols.currentPositionString;
+
+            if(lATime.Text == lTime.Text)
+            {
+                timer1.Stop();
+            }
+        }
+
+        private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            Player.Ctlcontrols.currentPosition = (double)trackBar1.Value;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Player.fullScreen = true;
+            
+        }
+
+        private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            Player.settings.volume = trackBar2.Value;
         }
     }
 }
