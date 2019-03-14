@@ -36,7 +36,11 @@ namespace Projekt_InzOpr
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Okno));
             this.Player = new AxWMPLib.AxWindowsMediaPlayer();
             this.SelectingFileDialog = new System.Windows.Forms.OpenFileDialog();
+
             this.panelSterowanie = new System.Windows.Forms.Panel();
+
+
+
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.lTime = new System.Windows.Forms.Label();
@@ -46,6 +50,7 @@ namespace Projekt_InzOpr
             this.buttonOtworz = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
@@ -69,6 +74,7 @@ namespace Projekt_InzOpr
             // 
             this.SelectingFileDialog.FileName = "openFileDialog1";
             // 
+
             // panelSterowanie
             // 
             this.panelSterowanie.AutoSize = true;
@@ -89,6 +95,8 @@ namespace Projekt_InzOpr
             this.panelSterowanie.Size = new System.Drawing.Size(1264, 79);
             this.panelSterowanie.TabIndex = 1;
             this.panelSterowanie.Visible = false;
+
+          
             // 
             // trackBar1
             // 
@@ -214,6 +222,7 @@ namespace Projekt_InzOpr
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+
         private TrackBar trackBar1;
         private Label label1;
         private Label lTime;
