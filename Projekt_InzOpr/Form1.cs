@@ -20,7 +20,8 @@ namespace Projekt_InzOpr
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
-
+            this.WindowState = FormWindowState.Normal;
+            Player.stretchToFit = true;         
 
         }
 
@@ -78,6 +79,7 @@ namespace Projekt_InzOpr
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 CurrentVideoPath = openFileDialog1.FileName;
+                
                 Player.URL = CurrentVideoPath;
                 czas();
             }
@@ -157,10 +159,9 @@ namespace Projekt_InzOpr
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Player.fullScreen = true;
-            Form2 frm = new Form2();
-            frm.TopMost = true;
-            frm.Show();
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+
         }
 
         private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
