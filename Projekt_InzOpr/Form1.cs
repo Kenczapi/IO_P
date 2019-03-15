@@ -15,26 +15,22 @@ namespace Projekt_InzOpr
     public partial class Okno : Form
     {
 
-
         public Okno()
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
             this.WindowState = FormWindowState.Normal;
             Player.stretchToFit = true;         
-
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
-
-
-            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt")) //istnieje pliczek
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //istnieje pliczek
             {
                 //https://docs.microsoft.com/en-us/windows/desktop/wmp/wmplibiwmpcontrols-iwmpcontrols-currentposition--vb-and-c
                 //https://docs.microsoft.com/pl-pl/dotnet/api/system.io.streamreader?view=netframework-4.7.2
 
-                using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt")) //zeby bylo widoczne tylko lokalnie
+                using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
                 {
                     string line = sr.ReadLine();
                     if (File.Exists(line)) //plik ktory chcemy otworzyc istnieje
@@ -45,31 +41,31 @@ namespace Projekt_InzOpr
                         
                         trackBarDzwiek.Value = Player.settings.volume;
                         czas();
-
                     }
                 }
             }
-
+            CheckPlayPauseButton();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if(Player.URL == string.Empty)
+            {
+                MessageBox.Show("Nie podano scieżki do żadnego filmu.", "Brak filmu.", MessageBoxButtons.OK);
+                return;
+            }
 
-            if (buttonPlay.Text == "Pause")
+            if (Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
                 Player.Ctlcontrols.pause();
                 buttonPlay.Text = "Play";
                 timer1.Stop();
-                return;
             }
-
-            if (Player.playState == WMPLib.WMPPlayState.wmppsPaused) //przycisk nacisniety gdy jest zapauzowane
+            else //przycisk nacisniety gdy jest zapauzowane
             {
-
                 Player.Ctlcontrols.play();
                 buttonPlay.Text = "Pause";
                 timer1.Start();
-                return;
             }
 
         }
@@ -79,9 +75,9 @@ namespace Projekt_InzOpr
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 CurrentVideoPath = openFileDialog1.FileName;
-                
                 Player.URL = CurrentVideoPath;
                 czas();
+                CheckPlayPauseButton();
             }
             else
                 return;
@@ -107,7 +103,7 @@ namespace Projekt_InzOpr
                 Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
                 "\n==END==\n";
 
-                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.dt", jakiesInfo);
+                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
             }
 
             this.Close();
@@ -128,7 +124,6 @@ namespace Projekt_InzOpr
                 else
                 {
                     panelSterowanie.Visible = false;
-
                 }
             }
             else
@@ -136,8 +131,6 @@ namespace Projekt_InzOpr
 
 
             }
-
-
         }
 
 
@@ -160,8 +153,7 @@ namespace Projekt_InzOpr
         private void button4_Click(object sender, EventArgs e)
         {
             this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-
+            this.WindowState = FormWindowState.Maximized;         
         }
 
         private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
@@ -169,20 +161,31 @@ namespace Projekt_InzOpr
             Player.settings.volume = trackBarDzwiek.Value;
         }
 
-        private void PlayPauseButtonCheck()
+        private void CheckPlayPauseButton()
         {
-            if (Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
+            if(Player.playState == WMPLib.WMPPlayState.wmppsReady || Player.playState == WMPLib.WMPPlayState.wmppsPlaying || Player.playState == WMPLib.WMPPlayState.wmppsTransitioning)
             {
+                //gotowe do odtwarzania , odtwarza, przygotowuje sie do odtworzenia
                 buttonPlay.Text = "Pause";
             }
             else
             {
+                //Uzywalem do testowania stanow odtwarzacza MessageBox.Show("Current Player.playState: " + Player.playState.ToString());
                 buttonPlay.Text = "Play";
             }
         }
-    }
-        public class HistoriaOgladania
+
+        private void Okno_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if(e.KeyChar == (char)27) //wcisniecie escape
+            {
+                //to do: wylaczenie fullscreena
+            }
+        }
+    }
+
+    public class HistoriaOgladania
+    {
             string sciezka;
             double czasZatrzymania;
 
@@ -204,7 +207,6 @@ namespace Projekt_InzOpr
                 return (sciezka + "\n"
                     + czasZatrzymania
                     + "\n==END==\n");
-
             }
-        }
+    }
 }

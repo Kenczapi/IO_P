@@ -189,10 +189,11 @@ namespace Projekt_InzOpr
             this.Controls.Add(this.panelSterowanie);
             this.Controls.Add(this.Player);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Okno";
             this.Text = "Form1";
-            this.MinimumSize = new Size(800, 600);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Okno_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
             this.panelSterowanie.ResumeLayout(false);
             this.panelSterowanie.PerformLayout();
