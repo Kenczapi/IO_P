@@ -35,13 +35,9 @@ namespace Projekt_InzOpr
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Okno));
             this.Player = new AxWMPLib.AxWindowsMediaPlayer();
-            this.SelectingFileDialog = new System.Windows.Forms.OpenFileDialog();
-
             this.panelSterowanie = new System.Windows.Forms.Panel();
-
-
-
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.trackBarDzwiek = new System.Windows.Forms.TrackBar();
+            this.trackBarCzas = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.lTime = new System.Windows.Forms.Label();
             this.lATime = new System.Windows.Forms.Label();
@@ -50,13 +46,11 @@ namespace Projekt_InzOpr
             this.buttonOtworz = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.panelSterowanie.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDzwiek)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarCzas)).BeginInit();
             this.SuspendLayout();
             // 
             // Player
@@ -70,18 +64,13 @@ namespace Projekt_InzOpr
             this.Player.TabIndex = 0;
             this.Player.MouseMoveEvent += new AxWMPLib._WMPOCXEvents_MouseMoveEventHandler(this.Player_MouseMoveEvent);
             // 
-            // SelectingFileDialog
-            // 
-            this.SelectingFileDialog.FileName = "openFileDialog1";
-            // 
-
             // panelSterowanie
             // 
             this.panelSterowanie.AutoSize = true;
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSterowanie.BackColor = System.Drawing.SystemColors.Control;
-            this.panelSterowanie.Controls.Add(this.trackBar2);
-            this.panelSterowanie.Controls.Add(this.trackBar1);
+            this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
+            this.panelSterowanie.Controls.Add(this.trackBarCzas);
             this.panelSterowanie.Controls.Add(this.label1);
             this.panelSterowanie.Controls.Add(this.lTime);
             this.panelSterowanie.Controls.Add(this.lATime);
@@ -95,16 +84,24 @@ namespace Projekt_InzOpr
             this.panelSterowanie.Size = new System.Drawing.Size(1264, 79);
             this.panelSterowanie.TabIndex = 1;
             this.panelSterowanie.Visible = false;
-
-          
             // 
-            // trackBar1
+            // trackBarDzwiek
             // 
-            this.trackBar1.Location = new System.Drawing.Point(98, 28);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(881, 45);
-            this.trackBar1.TabIndex = 9;
-            this.trackBar1.MouseCaptureChanged += new System.EventHandler(this.trackBar1_MouseCaptureChanged);
+            this.trackBarDzwiek.Location = new System.Drawing.Point(1111, 4);
+            this.trackBarDzwiek.Maximum = 100;
+            this.trackBarDzwiek.Name = "trackBarDzwiek";
+            this.trackBarDzwiek.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trackBarDzwiek.Size = new System.Drawing.Size(45, 72);
+            this.trackBarDzwiek.TabIndex = 10;
+            this.trackBarDzwiek.MouseCaptureChanged += new System.EventHandler(this.trackBar2_MouseCaptureChanged);
+            // 
+            // trackBarCzas
+            // 
+            this.trackBarCzas.Location = new System.Drawing.Point(98, 28);
+            this.trackBarCzas.Name = "trackBarCzas";
+            this.trackBarCzas.Size = new System.Drawing.Size(881, 45);
+            this.trackBarCzas.TabIndex = 9;
+            this.trackBarCzas.MouseCaptureChanged += new System.EventHandler(this.trackBar1_MouseCaptureChanged);
             // 
             // label1
             // 
@@ -120,18 +117,18 @@ namespace Projekt_InzOpr
             this.lTime.AutoSize = true;
             this.lTime.Location = new System.Drawing.Point(1054, 28);
             this.lTime.Name = "lTime";
-            this.lTime.Size = new System.Drawing.Size(35, 13);
+            this.lTime.Size = new System.Drawing.Size(34, 13);
             this.lTime.TabIndex = 7;
-            this.lTime.Text = "label1";
+            this.lTime.Text = "00:00";
             // 
             // lATime
             // 
             this.lATime.AutoSize = true;
             this.lATime.Location = new System.Drawing.Point(985, 28);
             this.lATime.Name = "lATime";
-            this.lATime.Size = new System.Drawing.Size(35, 13);
+            this.lATime.Size = new System.Drawing.Size(34, 13);
             this.lATime.TabIndex = 6;
-            this.lATime.Text = "label1";
+            this.lATime.Text = "00:00";
             // 
             // button4
             // 
@@ -182,16 +179,6 @@ namespace Projekt_InzOpr
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // trackBar2
-            // 
-            this.trackBar2.Location = new System.Drawing.Point(1111, 4);
-            this.trackBar2.Maximum = 100;
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar2.Size = new System.Drawing.Size(45, 72);
-            this.trackBar2.TabIndex = 10;
-            this.trackBar2.MouseCaptureChanged += new System.EventHandler(this.trackBar2_MouseCaptureChanged);
-            // 
             // Okno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -207,15 +194,14 @@ namespace Projekt_InzOpr
             ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
             this.panelSterowanie.ResumeLayout(false);
             this.panelSterowanie.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDzwiek)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarCzas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.OpenFileDialog SelectingFileDialog;
         private System.Windows.Forms.Panel panelSterowanie;
         private System.Windows.Forms.Button buttonZamknij;
         private System.Windows.Forms.Button buttonOtworz;
@@ -223,13 +209,13 @@ namespace Projekt_InzOpr
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
-        private TrackBar trackBar1;
+        private TrackBar trackBarCzas;
         private Label label1;
         private Label lTime;
         private Label lATime;
         private Timer timer1;
         private AxWMPLib.AxWindowsMediaPlayer Player;
-        private TrackBar trackBar2;
+        private TrackBar trackBarDzwiek;
     }
 }
 

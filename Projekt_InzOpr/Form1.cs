@@ -41,8 +41,8 @@ namespace Projekt_InzOpr
                         Player.URL = CurrentVideoPath = line;
                         line = sr.ReadLine();
                         Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
-
-                        trackBar2.Value = Player.settings.volume;
+                        
+                        trackBarDzwiek.Value = Player.settings.volume;
                         czas();
 
                     }
@@ -59,7 +59,7 @@ namespace Projekt_InzOpr
                 Player.Ctlcontrols.pause();
                 buttonPlay.Text = "Play";
                 timer1.Stop();
-
+                return;
             }
 
             if (Player.playState == WMPLib.WMPPlayState.wmppsPaused) //przycisk nacisniety gdy jest zapauzowane
@@ -68,7 +68,7 @@ namespace Projekt_InzOpr
                 Player.Ctlcontrols.play();
                 buttonPlay.Text = "Pause";
                 timer1.Start();
-
+                return;
             }
 
         }
@@ -89,7 +89,7 @@ namespace Projekt_InzOpr
         {
             var clip = Player.newMedia(CurrentVideoPath);
             this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
-            trackBar1.Maximum = (int)clip.duration + 1;
+            trackBarCzas.Maximum = (int)clip.duration + 1;
             timer1.Start();
         }
 
@@ -141,7 +141,7 @@ namespace Projekt_InzOpr
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            trackBar1.Value = (int)Player.Ctlcontrols.currentPosition;
+            trackBarCzas.Value = (int)Player.Ctlcontrols.currentPosition;
             lATime.Text = Player.Ctlcontrols.currentPositionString;
 
             if (lATime.Text == lTime.Text)
@@ -152,18 +152,32 @@ namespace Projekt_InzOpr
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
         {
-            Player.Ctlcontrols.currentPosition = (double)trackBar1.Value;
+            Player.Ctlcontrols.currentPosition = (double)trackBarCzas.Value;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             Player.fullScreen = true;
-
+            Form2 frm = new Form2();
+            frm.TopMost = true;
+            frm.Show();
         }
 
         private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
         {
-            Player.settings.volume = trackBar2.Value;
+            Player.settings.volume = trackBarDzwiek.Value;
+        }
+
+        private void PlayPauseButtonCheck()
+        {
+            if (Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
+            {
+                buttonPlay.Text = "Pause";
+            }
+            else
+            {
+                buttonPlay.Text = "Play";
+            }
         }
     }
         public class HistoriaOgladania

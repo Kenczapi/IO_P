@@ -43,3 +43,4 @@ C:\Users\Bartosz\Desktop\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Deb
 C:\Users\Bartosz\Desktop\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.CoreCompileInputs.cache
 C:\Users\Bartosz\Desktop\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.exe
 C:\Users\Bartosz\Desktop\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.pdb
+C:\Users\snowy\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.Form2.resources
