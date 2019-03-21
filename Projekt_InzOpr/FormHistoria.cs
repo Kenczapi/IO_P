@@ -19,6 +19,8 @@ namespace Projekt_InzOpr
 
         private void FormHistoria_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'serwerHistoriaDataSet1.Tabela' table. You can move, or remove it, as needed.
+            this.tabelaTableAdapter.Fill(this.serwerHistoriaDataSet1.Tabela);
             // TODO: This line of code loads data into the 'serwerHistoriaDataSet.Table' table. You can move, or remove it, as needed.
             this.tableTableAdapter.Fill(this.serwerHistoriaDataSet.Table);
 

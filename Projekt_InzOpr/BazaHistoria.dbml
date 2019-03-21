@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="HistoriaOgladaniaDB" Class="BazaHistoriaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\HistoriaOgladaniaDB.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="Projekt_InzOpr.Properties.Settings" SettingsPropertyName="HistoriaOgladaniaDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.TabelaOgladane" Member="TabelaOgladanes">
+    <Type Name="TabelaOgladane">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Sciezka" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Tytul" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CzasCalosci" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MomentZatrzymania" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

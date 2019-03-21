@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SerwerHistoria" Class="HistoriaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\SerwerHistoria.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="Projekt_InzOpr.Properties.Settings" SettingsPropertyName="SerwerHistoriaConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.[Table]" Member="Tables">
-    <Type Name="Table">
+  <Table Name="dbo.Tabela" Member="Tabelas">
+    <Type Name="Tabela">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Tytul" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Tytul" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CzasCaly" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="CzasZatrzymania" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Sciezka" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

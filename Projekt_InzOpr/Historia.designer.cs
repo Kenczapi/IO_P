@@ -30,9 +30,9 @@ namespace Projekt_InzOpr
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertTable(Table instance);
-    partial void UpdateTable(Table instance);
-    partial void DeleteTable(Table instance);
+    partial void InsertTabela(Tabela instance);
+    partial void UpdateTabela(Tabela instance);
+    partial void DeleteTabela(Tabela instance);
     #endregion
 		
 		public HistoriaDataContext() : 
@@ -65,17 +65,17 @@ namespace Projekt_InzOpr
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Table> Tables
+		public System.Data.Linq.Table<Tabela> Tabelas
 		{
 			get
 			{
-				return this.GetTable<Table>();
+				return this.GetTable<Tabela>();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[Table]")]
-	public partial class Table : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tabela")]
+	public partial class Tabela : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -87,6 +87,8 @@ namespace Projekt_InzOpr
 		private double _CzasCaly;
 		
 		private System.Nullable<double> _CzasZatrzymania;
+		
+		private string _Sciezka;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -100,9 +102,11 @@ namespace Projekt_InzOpr
     partial void OnCzasCalyChanged();
     partial void OnCzasZatrzymaniaChanging(System.Nullable<double> value);
     partial void OnCzasZatrzymaniaChanged();
+    partial void OnSciezkaChanging(string value);
+    partial void OnSciezkaChanged();
     #endregion
 		
-		public Table()
+		public Tabela()
 		{
 			OnCreated();
 		}
@@ -127,7 +131,7 @@ namespace Projekt_InzOpr
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tytul", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tytul", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
 		public string Tytul
 		{
 			get
@@ -183,6 +187,26 @@ namespace Projekt_InzOpr
 					this._CzasZatrzymania = value;
 					this.SendPropertyChanged("CzasZatrzymania");
 					this.OnCzasZatrzymaniaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sciezka", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Sciezka
+		{
+			get
+			{
+				return this._Sciezka;
+			}
+			set
+			{
+				if ((this._Sciezka != value))
+				{
+					this.OnSciezkaChanging(value);
+					this.SendPropertyChanging();
+					this._Sciezka = value;
+					this.SendPropertyChanged("Sciezka");
+					this.OnSciezkaChanged();
 				}
 			}
 		}

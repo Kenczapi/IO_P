@@ -29,18 +29,38 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.serwerHistoriaDataSet = new Projekt_InzOpr.SerwerHistoriaDataSet();
             this.tableBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.serwerHistoriaDataSet = new Projekt_InzOpr.SerwerHistoriaDataSet();
             this.tableTableAdapter = new Projekt_InzOpr.SerwerHistoriaDataSetTableAdapters.TableTableAdapter();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.serwerHistoriaDataSet1 = new Projekt_InzOpr.SerwerHistoriaDataSet1();
+            this.tabelaBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tabelaTableAdapter = new Projekt_InzOpr.SerwerHistoriaDataSet1TableAdapters.TabelaTableAdapter();
             this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tytulDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.czasCalyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.czasZatrzymaniaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.serwerHistoriaDataSet)).BeginInit();
+            this.sciezkaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tableBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.serwerHistoriaDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.serwerHistoriaDataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabelaBindingSource)).BeginInit();
             this.SuspendLayout();
+            // 
+            // tableBindingSource
+            // 
+            this.tableBindingSource.DataMember = "Table";
+            this.tableBindingSource.DataSource = this.serwerHistoriaDataSet;
+            // 
+            // serwerHistoriaDataSet
+            // 
+            this.serwerHistoriaDataSet.DataSetName = "SerwerHistoriaDataSet";
+            this.serwerHistoriaDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // tableTableAdapter
+            // 
+            this.tableTableAdapter.ClearBeforeFill = true;
             // 
             // dataGridView1
             // 
@@ -50,37 +70,33 @@
             this.iDDataGridViewTextBoxColumn,
             this.tytulDataGridViewTextBoxColumn,
             this.czasCalyDataGridViewTextBoxColumn,
-            this.czasZatrzymaniaDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.tableBindingSource;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.MultiSelect = false;
+            this.czasZatrzymaniaDataGridViewTextBoxColumn,
+            this.sciezkaDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.tabelaBindingSource;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(800, 391);
+            this.dataGridView1.Size = new System.Drawing.Size(776, 396);
             this.dataGridView1.TabIndex = 0;
             // 
-            // serwerHistoriaDataSet
+            // serwerHistoriaDataSet1
             // 
-            this.serwerHistoriaDataSet.DataSetName = "SerwerHistoriaDataSet";
-            this.serwerHistoriaDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.serwerHistoriaDataSet1.DataSetName = "SerwerHistoriaDataSet1";
+            this.serwerHistoriaDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // tableBindingSource
+            // tabelaBindingSource
             // 
-            this.tableBindingSource.DataMember = "Table";
-            this.tableBindingSource.DataSource = this.serwerHistoriaDataSet;
+            this.tabelaBindingSource.DataMember = "Tabela";
+            this.tabelaBindingSource.DataSource = this.serwerHistoriaDataSet1;
             // 
-            // tableTableAdapter
+            // tabelaTableAdapter
             // 
-            this.tableTableAdapter.ClearBeforeFill = true;
+            this.tabelaTableAdapter.ClearBeforeFill = true;
             // 
             // iDDataGridViewTextBoxColumn
             // 
             this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
             this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
             this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.Visible = false;
             // 
             // tytulDataGridViewTextBoxColumn
             // 
@@ -101,6 +117,12 @@
             this.czasZatrzymaniaDataGridViewTextBoxColumn.HeaderText = "CzasZatrzymania";
             this.czasZatrzymaniaDataGridViewTextBoxColumn.Name = "czasZatrzymaniaDataGridViewTextBoxColumn";
             // 
+            // sciezkaDataGridViewTextBoxColumn
+            // 
+            this.sciezkaDataGridViewTextBoxColumn.DataPropertyName = "Sciezka";
+            this.sciezkaDataGridViewTextBoxColumn.HeaderText = "Sciezka";
+            this.sciezkaDataGridViewTextBoxColumn.Name = "sciezkaDataGridViewTextBoxColumn";
+            // 
             // FormHistoria
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,22 +132,27 @@
             this.Name = "FormHistoria";
             this.Text = "FormHistoria";
             this.Load += new System.EventHandler(this.FormHistoria_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.serwerHistoriaDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tableBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.serwerHistoriaDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.serwerHistoriaDataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabelaBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dataGridView1;
         private SerwerHistoriaDataSet serwerHistoriaDataSet;
         private System.Windows.Forms.BindingSource tableBindingSource;
         private SerwerHistoriaDataSetTableAdapters.TableTableAdapter tableTableAdapter;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private SerwerHistoriaDataSet1 serwerHistoriaDataSet1;
+        private System.Windows.Forms.BindingSource tabelaBindingSource;
+        private SerwerHistoriaDataSet1TableAdapters.TabelaTableAdapter tabelaTableAdapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn tytulDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn czasCalyDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn czasZatrzymaniaDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sciezkaDataGridViewTextBoxColumn;
     }
 }

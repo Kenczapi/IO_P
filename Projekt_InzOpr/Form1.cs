@@ -45,7 +45,9 @@ namespace Projekt_InzOpr
                 }
             }
             CheckPlayPauseButton();
-            GetCurrentMediaTitle();
+            if (GetCurrentMediaTitle())
+                this.Text = Title;
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -82,6 +84,7 @@ namespace Projekt_InzOpr
                 czas();
                 CheckPlayPauseButton();
                 GetCurrentMediaTitle();
+                this.Text = Title;
             }
             else
                 return;
@@ -219,15 +222,17 @@ namespace Projekt_InzOpr
             {
                 using (var Polaczenie = new HistoriaDataContext())
                 {
-                    var Dane = new Table()
-                    {
-                        ID = ID_Filmu++,
-                        Tytul = Title,
-                        CzasZatrzymania = this.Player.Ctlcontrols.currentPosition,
-                        CzasCaly = this.Player.currentMedia.duration
-                    };
+                    var Dane = new Tabela();
 
-                    Polaczenie.Tables.InsertOnSubmit(Dane);
+                    Dane.ID = ID_Filmu++;
+                    Dane.CzasZatrzymania = this.Player.Ctlcontrols.currentPosition;
+                    Dane.CzasCaly = this.Player.currentMedia.duration;
+                    Dane.Sciezka = CurrentVideoPath;
+                        if (Title.Length < 50)
+                            Dane.Tytul = Title;
+                        else
+                            Dane.Tytul = Title.Substring(0, 50);
+                    Polaczenie.Tabelas.InsertOnSubmit(Dane);
                     Polaczenie.SubmitChanges();
                 }
             }
