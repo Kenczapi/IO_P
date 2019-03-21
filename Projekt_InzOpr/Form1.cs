@@ -20,7 +20,7 @@ namespace Projekt_InzOpr
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
             this.WindowState = FormWindowState.Normal;
-            Player.stretchToFit = true;         
+            Player.stretchToFit = true;
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
@@ -38,18 +38,19 @@ namespace Projekt_InzOpr
                         Player.URL = CurrentVideoPath = line;
                         line = sr.ReadLine();
                         Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
-                        
+
                         trackBarDzwiek.Value = Player.settings.volume;
                         czas();
                     }
                 }
             }
             CheckPlayPauseButton();
+            GetCurrentMediaTitle();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(Player.URL == string.Empty)
+            if (Player.URL == string.Empty)
             {
                 MessageBox.Show("Nie podano scieżki do żadnego filmu.", "Brak filmu.", MessageBoxButtons.OK);
                 return;
@@ -72,12 +73,15 @@ namespace Projekt_InzOpr
 
         private void button2_Click(object sender, EventArgs e)
         {
+            DodajDoHistorii();
+
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 CurrentVideoPath = openFileDialog1.FileName;
                 Player.URL = CurrentVideoPath;
                 czas();
                 CheckPlayPauseButton();
+                GetCurrentMediaTitle();
             }
             else
                 return;
@@ -106,12 +110,35 @@ namespace Projekt_InzOpr
                 File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
             }
 
+            DodajDoHistorii();
             this.Close();
 
         }
 
         private string CurrentVideoPath { get; set; }
 
+        private string Title { get; set; }
+
+        private bool GetCurrentMediaTitle()
+        {
+            if (this.CurrentVideoPath == null)
+            {
+                MessageBox.Show("Pusta sciezka, nie mozna okreslic tytulu");
+                Title = string.Empty;
+                return false;
+            }
+
+            int lastBackslash = CurrentVideoPath.LastIndexOf('\\', CurrentVideoPath.Length - 1);
+            if (lastBackslash < 0)
+            {
+                MessageBox.Show("Nie mozna okreslic tytulu");
+                Title = string.Empty;
+                return false;
+            }
+
+            Title = CurrentVideoPath.Substring(lastBackslash + 1);
+            return true;
+        }
 
         private void Player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
@@ -153,7 +180,7 @@ namespace Projekt_InzOpr
         private void button4_Click(object sender, EventArgs e)
         {
             this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;         
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
@@ -163,7 +190,7 @@ namespace Projekt_InzOpr
 
         private void CheckPlayPauseButton()
         {
-            if(Player.playState == WMPLib.WMPPlayState.wmppsReady || Player.playState == WMPLib.WMPPlayState.wmppsPlaying || Player.playState == WMPLib.WMPPlayState.wmppsTransitioning)
+            if (Player.playState == WMPLib.WMPPlayState.wmppsReady || Player.playState == WMPLib.WMPPlayState.wmppsPlaying || Player.playState == WMPLib.WMPPlayState.wmppsTransitioning)
             {
                 //gotowe do odtwarzania , odtwarza, przygotowuje sie do odtworzenia
                 buttonPlay.Text = "Pause";
@@ -177,36 +204,69 @@ namespace Projekt_InzOpr
 
         private void Okno_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == (char)27) //wcisniecie escape
+            if (e.KeyChar == (char)27) //wcisniecie escape
             {
                 //to do: wylaczenie fullscreena
             }
         }
-    }
 
-    public class HistoriaOgladania
-    {
-            string sciezka;
-            double czasZatrzymania;
+        private static int ID_Filmu = 1;
 
-            //bedzie mi potrzebne do zrobienia historii ogladanych prawdopodobnie
-            public HistoriaOgladania()
+        private bool DodajDoHistorii()
+        {
+            if(this.Player.currentMedia != null)
+            try
             {
-                this.sciezka = string.Empty;
-                this.czasZatrzymania = 0;
+                using (var Polaczenie = new HistoriaDataContext())
+                {
+                    var Dane = new Table()
+                    {
+                        ID = ID_Filmu++,
+                        Tytul = Title,
+                        CzasZatrzymania = this.Player.Ctlcontrols.currentPosition,
+                        CzasCaly = this.Player.currentMedia.duration
+                    };
+
+                    Polaczenie.Tables.InsertOnSubmit(Dane);
+                    Polaczenie.SubmitChanges();
+                }
+            }
+            catch(Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+                return false;
+            }
+                return true;
+        }
+
+        private void Okno_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("", "Jesteś pewien?", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
             }
 
-            public HistoriaOgladania(string s, double c)
+            if (this.CurrentVideoPath != null)
             {
-                this.sciezka = s;
-                this.czasZatrzymania = c;
-            }
+                DodajDoHistorii();
+                string jakiesInfo;
 
-            public override string ToString()
-            {
-                return (sciezka + "\n"
-                    + czasZatrzymania
-                    + "\n==END==\n");
+                if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
+                {
+                    jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
+                    Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
+                    "\n==END==\n";
+
+                    File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
+                }
             }
+        }
+
+        private void buttonHistoria_Click(object sender, EventArgs e)
+        {
+            Form Historia = new FormHistoria();
+            Historia.Show();
+        }
     }
 }

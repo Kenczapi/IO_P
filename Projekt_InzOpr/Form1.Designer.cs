@@ -47,6 +47,7 @@ namespace Projekt_InzOpr
             this.buttonPlay = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.buttonHistoria = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.panelSterowanie.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDzwiek)).BeginInit();
@@ -69,6 +70,7 @@ namespace Projekt_InzOpr
             this.panelSterowanie.AutoSize = true;
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSterowanie.BackColor = System.Drawing.SystemColors.Control;
+            this.panelSterowanie.Controls.Add(this.buttonHistoria);
             this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
             this.panelSterowanie.Controls.Add(this.trackBarCzas);
             this.panelSterowanie.Controls.Add(this.label1);
@@ -97,9 +99,9 @@ namespace Projekt_InzOpr
             // 
             // trackBarCzas
             // 
-            this.trackBarCzas.Location = new System.Drawing.Point(98, 28);
+            this.trackBarCzas.Location = new System.Drawing.Point(204, 28);
             this.trackBarCzas.Name = "trackBarCzas";
-            this.trackBarCzas.Size = new System.Drawing.Size(881, 45);
+            this.trackBarCzas.Size = new System.Drawing.Size(775, 45);
             this.trackBarCzas.TabIndex = 9;
             this.trackBarCzas.MouseCaptureChanged += new System.EventHandler(this.trackBar1_MouseCaptureChanged);
             // 
@@ -179,6 +181,16 @@ namespace Projekt_InzOpr
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // buttonHistoria
+            // 
+            this.buttonHistoria.Location = new System.Drawing.Point(100, 28);
+            this.buttonHistoria.Name = "buttonHistoria";
+            this.buttonHistoria.Size = new System.Drawing.Size(75, 23);
+            this.buttonHistoria.TabIndex = 11;
+            this.buttonHistoria.Text = "Historia";
+            this.buttonHistoria.UseVisualStyleBackColor = true;
+            this.buttonHistoria.Click += new System.EventHandler(this.buttonHistoria_Click);
+            // 
             // Okno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -219,6 +231,7 @@ namespace Projekt_InzOpr
         private Timer timer1;
         private AxWMPLib.AxWindowsMediaPlayer Player;
         private TrackBar trackBarDzwiek;
+        private Button buttonHistoria;
     }
 }
 
