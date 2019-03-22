@@ -45,7 +45,7 @@ namespace Projekt_InzOpr
                 }
             }
             CheckPlayPauseButton();
-            if (GetCurrentMediaTitle())
+            if (SetCurrentTitle())
                 this.Text = Title;
             
         }
@@ -83,7 +83,7 @@ namespace Projekt_InzOpr
                 Player.URL = CurrentVideoPath;
                 czas();
                 CheckPlayPauseButton();
-                GetCurrentMediaTitle();
+                SetCurrentTitle();
                 this.Text = Title;
             }
             else
@@ -122,7 +122,7 @@ namespace Projekt_InzOpr
 
         private string Title { get; set; }
 
-        private bool GetCurrentMediaTitle()
+        private bool SetCurrentTitle()
         {
             if (this.CurrentVideoPath == null)
             {
@@ -268,10 +268,23 @@ namespace Projekt_InzOpr
             }
         }
 
+        public double zt { get; set; }
+        public double cl { get; set; }
+        public string sc { get; set; }
+
+        public void ZmienOdtwarzane()
+        {
+            timer1.Stop();
+            CurrentVideoPath = this.Player.URL = sc;
+            if (SetCurrentTitle())
+                this.Text = Title;
+            this.Player.Ctlcontrols.currentPosition = zt;
+            timer1.Start();
+        }
+
         private void buttonHistoria_Click(object sender, EventArgs e)
         {
-            Form Historia = new FormHistoria();
-            Historia.Show();
+            FormHistoria Historia = new FormHistoria(this);
         }
     }
 }
