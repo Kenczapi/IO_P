@@ -47,11 +47,29 @@ namespace Projekt_InzOpr
             this.buttonPlay = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.buttonHistoria = new System.Windows.Forms.Button();
+            this.panelHistoria = new System.Windows.Forms.Panel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.obejrzaneFilmyBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.historiaOgladaniaDataSet = new Projekt_InzOpr.HistoriaOgladaniaDataSet();
+            this.buttonWczytaj = new System.Windows.Forms.Button();
+            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tytulDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.czasCalyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.czasZatrzymaniaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sciezkaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.obejrzaneFilmyTableAdapter = new Projekt_InzOpr.HistoriaOgladaniaDataSetTableAdapters.ObejrzaneFilmyTableAdapter();
+            this.idDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.momentZatrzymaniaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tytulDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.panelSterowanie.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDzwiek)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCzas)).BeginInit();
+            this.panelHistoria.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.obejrzaneFilmyBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historiaOgladaniaDataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // Player
@@ -63,6 +81,7 @@ namespace Projekt_InzOpr
             this.Player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("Player.OcxState")));
             this.Player.Size = new System.Drawing.Size(1264, 681);
             this.Player.TabIndex = 0;
+            this.Player.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.Player_PlayStateChange);
             this.Player.MouseMoveEvent += new AxWMPLib._WMPOCXEvents_MouseMoveEventHandler(this.Player_MouseMoveEvent);
             // 
             // panelSterowanie
@@ -70,7 +89,6 @@ namespace Projekt_InzOpr
             this.panelSterowanie.AutoSize = true;
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSterowanie.BackColor = System.Drawing.SystemColors.Control;
-            this.panelSterowanie.Controls.Add(this.buttonHistoria);
             this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
             this.panelSterowanie.Controls.Add(this.trackBarCzas);
             this.panelSterowanie.Controls.Add(this.label1);
@@ -181,15 +199,110 @@ namespace Projekt_InzOpr
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // buttonHistoria
+            // panelHistoria
             // 
-            this.buttonHistoria.Location = new System.Drawing.Point(100, 28);
-            this.buttonHistoria.Name = "buttonHistoria";
-            this.buttonHistoria.Size = new System.Drawing.Size(75, 23);
-            this.buttonHistoria.TabIndex = 11;
-            this.buttonHistoria.Text = "Historia";
-            this.buttonHistoria.UseVisualStyleBackColor = true;
-            this.buttonHistoria.Click += new System.EventHandler(this.buttonHistoria_Click);
+            this.panelHistoria.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelHistoria.Controls.Add(this.dataGridView1);
+            this.panelHistoria.Controls.Add(this.buttonWczytaj);
+            this.panelHistoria.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelHistoria.Location = new System.Drawing.Point(1014, 0);
+            this.panelHistoria.Name = "panelHistoria";
+            this.panelHistoria.Size = new System.Drawing.Size(250, 602);
+            this.panelHistoria.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idDataGridViewTextBoxColumn1,
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn,
+            this.momentZatrzymaniaDataGridViewTextBoxColumn,
+            this.tytulDataGridViewTextBoxColumn1});
+            this.dataGridView1.DataSource = this.obejrzaneFilmyBindingSource;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(250, 421);
+            this.dataGridView1.TabIndex = 2;
+            // 
+            // obejrzaneFilmyBindingSource
+            // 
+            this.obejrzaneFilmyBindingSource.DataMember = "ObejrzaneFilmy";
+            this.obejrzaneFilmyBindingSource.DataSource = this.historiaOgladaniaDataSet;
+            // 
+            // historiaOgladaniaDataSet
+            // 
+            this.historiaOgladaniaDataSet.DataSetName = "HistoriaOgladaniaDataSet";
+            this.historiaOgladaniaDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // buttonWczytaj
+            // 
+            this.buttonWczytaj.Location = new System.Drawing.Point(83, 573);
+            this.buttonWczytaj.Name = "buttonWczytaj";
+            this.buttonWczytaj.Size = new System.Drawing.Size(75, 23);
+            this.buttonWczytaj.TabIndex = 1;
+            this.buttonWczytaj.Text = "Wczytaj";
+            this.buttonWczytaj.UseVisualStyleBackColor = true;
+            this.buttonWczytaj.Click += new System.EventHandler(this.buttonWczytaj_Click);
+            // 
+            // iDDataGridViewTextBoxColumn
+            // 
+            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
+            // 
+            // tytulDataGridViewTextBoxColumn
+            // 
+            this.tytulDataGridViewTextBoxColumn.Name = "tytulDataGridViewTextBoxColumn";
+            // 
+            // czasCalyDataGridViewTextBoxColumn
+            // 
+            this.czasCalyDataGridViewTextBoxColumn.Name = "czasCalyDataGridViewTextBoxColumn";
+            // 
+            // czasZatrzymaniaDataGridViewTextBoxColumn
+            // 
+            this.czasZatrzymaniaDataGridViewTextBoxColumn.Name = "czasZatrzymaniaDataGridViewTextBoxColumn";
+            // 
+            // sciezkaDataGridViewTextBoxColumn
+            // 
+            this.sciezkaDataGridViewTextBoxColumn.Name = "sciezkaDataGridViewTextBoxColumn";
+            // 
+            // obejrzaneFilmyTableAdapter
+            // 
+            this.obejrzaneFilmyTableAdapter.ClearBeforeFill = true;
+            // 
+            // idDataGridViewTextBoxColumn1
+            // 
+            this.idDataGridViewTextBoxColumn1.DataPropertyName = "Id";
+            this.idDataGridViewTextBoxColumn1.HeaderText = "Id";
+            this.idDataGridViewTextBoxColumn1.Name = "idDataGridViewTextBoxColumn1";
+            this.idDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.idDataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
+            this.idDataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // sciezkaDoPlikuDataGridViewTextBoxColumn
+            // 
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn.DataPropertyName = "SciezkaDoPliku";
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn.HeaderText = "SciezkaDoPliku";
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn.Name = "sciezkaDoPlikuDataGridViewTextBoxColumn";
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn.ReadOnly = true;
+            this.sciezkaDoPlikuDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // momentZatrzymaniaDataGridViewTextBoxColumn
+            // 
+            this.momentZatrzymaniaDataGridViewTextBoxColumn.DataPropertyName = "MomentZatrzymania";
+            this.momentZatrzymaniaDataGridViewTextBoxColumn.HeaderText = "MomentZatrzymania";
+            this.momentZatrzymaniaDataGridViewTextBoxColumn.Name = "momentZatrzymaniaDataGridViewTextBoxColumn";
+            this.momentZatrzymaniaDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // tytulDataGridViewTextBoxColumn1
+            // 
+            this.tytulDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.tytulDataGridViewTextBoxColumn1.DataPropertyName = "Tytul";
+            this.tytulDataGridViewTextBoxColumn1.HeaderText = "Tytul";
+            this.tytulDataGridViewTextBoxColumn1.Name = "tytulDataGridViewTextBoxColumn1";
+            this.tytulDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // Okno
             // 
@@ -198,6 +311,7 @@ namespace Projekt_InzOpr
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.panelHistoria);
             this.Controls.Add(this.panelSterowanie);
             this.Controls.Add(this.Player);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -211,6 +325,10 @@ namespace Projekt_InzOpr
             this.panelSterowanie.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDzwiek)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCzas)).EndInit();
+            this.panelHistoria.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.obejrzaneFilmyBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historiaOgladaniaDataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,7 +349,21 @@ namespace Projekt_InzOpr
         private Timer timer1;
         private AxWMPLib.AxWindowsMediaPlayer Player;
         private TrackBar trackBarDzwiek;
-        private Button buttonHistoria;
+        private Panel panelHistoria;
+        private DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn tytulDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn czasCalyDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn czasZatrzymaniaDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn sciezkaDataGridViewTextBoxColumn;
+        private Button buttonWczytaj;
+        private DataGridView dataGridView1;
+        private HistoriaOgladaniaDataSet historiaOgladaniaDataSet;
+        private BindingSource obejrzaneFilmyBindingSource;
+        private HistoriaOgladaniaDataSetTableAdapters.ObejrzaneFilmyTableAdapter obejrzaneFilmyTableAdapter;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn sciezkaDoPlikuDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn momentZatrzymaniaDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn tytulDataGridViewTextBoxColumn1;
     }
 }
 

@@ -21,33 +21,41 @@ namespace Projekt_InzOpr
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
             this.WindowState = FormWindowState.Normal;
             Player.stretchToFit = true;
+
+            this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Descending);
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
-            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //istnieje pliczek
-            {
-                //https://docs.microsoft.com/en-us/windows/desktop/wmp/wmplibiwmpcontrols-iwmpcontrols-currentposition--vb-and-c
-                //https://docs.microsoft.com/pl-pl/dotnet/api/system.io.streamreader?view=netframework-4.7.2
 
                 using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
                 {
                     string line = sr.ReadLine();
-                    if (File.Exists(line)) //plik ktory chcemy otworzyc istnieje
+                    if (File.Exists(line))
                     {
                         Player.URL = CurrentVideoPath = line;
                         line = sr.ReadLine();
                         Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
+                        line = sr.ReadLine();
+                        ID_Filmu = Convert.ToInt32(line);
 
                         trackBarDzwiek.Value = Player.settings.volume;
                         czas();
                     }
                 }
-            }
+
             CheckPlayPauseButton();
             if (SetCurrentTitle())
                 this.Text = Title;
-            
+
+            this.panelHistoria.Height = Player.Height;
+            this.dataGridView1.Height = panelHistoria.Height - 100;
+
+            buttonWczytaj.Location = new Point(panelHistoria.Width / 2 - buttonWczytaj.Width / 2, panelHistoria.Height - 50 - buttonWczytaj.Height / 2);
+            CzyByloZmieniane = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -75,8 +83,6 @@ namespace Projekt_InzOpr
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DodajDoHistorii();
-
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 CurrentVideoPath = openFileDialog1.FileName;
@@ -85,6 +91,7 @@ namespace Projekt_InzOpr
                 CheckPlayPauseButton();
                 SetCurrentTitle();
                 this.Text = Title;
+                CzyByloZmieniane = true;
             }
             else
                 return;
@@ -100,27 +107,26 @@ namespace Projekt_InzOpr
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // https://docs.microsoft.com/en-us/windows/desktop/wmp/player-playstate
-
             string jakiesInfo;
 
             if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
                 jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
-                Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
-                "\n==END==\n";
+                    Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
+                    "\n" + ID_Filmu.ToString() +
+                    "\n==END==\n";
 
                 File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
             }
 
-            DodajDoHistorii();
             this.Close();
-
         }
 
         private string CurrentVideoPath { get; set; }
 
         private string Title { get; set; }
+
+        private bool CzyByloZmieniane { get; set; }
 
         private bool SetCurrentTitle()
         {
@@ -143,10 +149,12 @@ namespace Projekt_InzOpr
             return true;
         }
 
+
         private void Player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
             if (!Player.fullScreen)
             {
+                //panel od sterowania
                 if (e.fY > Player.Height - panelSterowanie.Height)
                 {
                     panelSterowanie.Visible = true;
@@ -155,12 +163,26 @@ namespace Projekt_InzOpr
                 {
                     panelSterowanie.Visible = false;
                 }
+
+                //panel od historii odtwarzania
+                if(e.fX > Player.Width - panelHistoria.Width)
+                {
+                    dataGridView1.Height = panelHistoria.Height - 100;
+                    this.obejrzaneFilmyTableAdapter.Fill(this.historiaOgladaniaDataSet.ObejrzaneFilmy);
+                    buttonWczytaj.Location = new Point(panelHistoria.Width / 2 - buttonWczytaj.Width / 2, panelHistoria.Height - 50 - buttonWczytaj.Height / 2);
+                    panelHistoria.Visible = true;
+                }
+                else
+                {
+                    panelHistoria.Visible = false;
+                }
             }
             else
             {
 
 
             }
+
         }
 
 
@@ -173,6 +195,9 @@ namespace Projekt_InzOpr
             {
                 timer1.Stop();
             }
+
+            if ((int)this.Player.Ctlcontrols.currentPosition % 30 == 0)
+                updateCzasZatrzymania();
         }
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
@@ -215,33 +240,34 @@ namespace Projekt_InzOpr
 
         private static int ID_Filmu = 1;
 
-        private bool DodajDoHistorii()
+        private void DodajDoHistorii()
         {
-            if(this.Player.currentMedia != null)
-            try
+            if (this.Player.currentMedia != null)
             {
-                using (var Polaczenie = new HistoriaDataContext())
+                try
                 {
-                    var Dane = new Tabela();
-
-                    Dane.ID = ID_Filmu++;
-                    Dane.CzasZatrzymania = this.Player.Ctlcontrols.currentPosition;
-                    Dane.CzasCaly = this.Player.currentMedia.duration;
-                    Dane.Sciezka = CurrentVideoPath;
+                    using (DataClasses1DataContext PolaczenieZBaza = new DataClasses1DataContext())
+                    {
+                        var Dane = new ObejrzaneFilmy();
+                        Dane.Id = ID_Filmu++;
+                        Dane.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
+                        Dane.SciezkaDoPliku = CurrentVideoPath;
                         if (Title.Length < 50)
                             Dane.Tytul = Title;
                         else
                             Dane.Tytul = Title.Substring(0, 50);
-                    Polaczenie.Tabelas.InsertOnSubmit(Dane);
-                    Polaczenie.SubmitChanges();
+
+                        PolaczenieZBaza.ObejrzaneFilmies.InsertOnSubmit(Dane);
+                        PolaczenieZBaza.SubmitChanges();
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
                 }
             }
-            catch(Exception exc)
-            {
-                MessageBox.Show(exc.ToString());
-                return false;
-            }
-                return true;
+            else
+                MessageBox.Show("Nic nie jest odtwarzane");
         }
 
         private void Okno_FormClosing(object sender, FormClosingEventArgs e)
@@ -254,13 +280,13 @@ namespace Projekt_InzOpr
 
             if (this.CurrentVideoPath != null)
             {
-                DodajDoHistorii();
                 string jakiesInfo;
 
                 if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
                 {
                     jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
                     Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
+                    "\n" + ID_Filmu.ToString() +
                     "\n==END==\n";
 
                     File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
@@ -268,23 +294,101 @@ namespace Projekt_InzOpr
             }
         }
 
-        public double zt { get; set; }
-        public double cl { get; set; }
-        public string sc { get; set; }
-
-        public void ZmienOdtwarzane()
+        private void buttonWczytaj_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            CurrentVideoPath = this.Player.URL = sc;
-            if (SetCurrentTitle())
-                this.Text = Title;
-            this.Player.Ctlcontrols.currentPosition = zt;
-            timer1.Start();
+            if (dataGridView1.SelectedRows.Count > 1 || dataGridView1.SelectedRows == null)
+            {
+                MessageBox.Show("Nic nie wybrales");
+                return;
+            }
+
+            try
+            {
+                timer1.Stop();
+                Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.CurrentRow.Index].Value.ToString();
+                SetCurrentTitle();
+                if (dataGridView1[2, dataGridView1.CurrentRow.Index].Value == null)
+                {
+                    this.Player.Ctlcontrols.currentPosition = 0;
+                }
+                else
+                {     
+                    this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.CurrentRow.Index].Value);
+                }
+                lTime.Text = Player.currentMedia.durationString;
+                timer1.Start();
+
+                przesunElementHistorii(Convert.ToInt32(dataGridView1[0,dataGridView1.CurrentRow.Index].Value));
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
         }
 
-        private void buttonHistoria_Click(object sender, EventArgs e)
+        private void przesunElementHistorii(int old_id)
         {
-            FormHistoria Historia = new FormHistoria(this);
+            using (DataClasses1DataContext Polaczenie = new DataClasses1DataContext())
+            {
+                var query =
+                    from Film in Polaczenie.ObejrzaneFilmies
+                    where Film.Id == old_id
+                    select Film; //znajduje film o podanym ID
+
+                ObejrzaneFilmy nowy = new ObejrzaneFilmy();
+                foreach (ObejrzaneFilmy FM in query)
+                {
+                    nowy.Id = ID_Filmu++;
+                    nowy.MomentZatrzymania = FM.MomentZatrzymania;
+                    nowy.SciezkaDoPliku = FM.SciezkaDoPliku;
+                    nowy.Tytul = FM.Tytul;
+                    try
+                    {
+                        Polaczenie.ObejrzaneFilmies.InsertOnSubmit(nowy);
+                        Polaczenie.ObejrzaneFilmies.DeleteOnSubmit(FM);
+                        Polaczenie.SubmitChanges();
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.ToString());
+                    }
+                }
+
+            }
+            dataGridView1.Update();
+        }
+
+
+        private void Player_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {         
+            if(e.newState == 3 && CzyByloZmieniane == true)//odtwarza i media byly zmienione
+            {
+                CzyByloZmieniane = false;
+                DodajDoHistorii();
+            }
+        }
+
+        private void updateCzasZatrzymania()
+        {
+            DataClasses1DataContext Polaczenie = new DataClasses1DataContext();
+            var query =
+                    from Film in Polaczenie.ObejrzaneFilmies
+                    where Film.Id == ID_Filmu-1
+                    select Film; //znajduje ostatni dodany do historii film
+
+            ObejrzaneFilmy nowy = new ObejrzaneFilmy();
+            foreach (ObejrzaneFilmy FM in query)
+            {
+                FM.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
+                try
+                {
+                    Polaczenie.SubmitChanges();
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                }
+            }
         }
     }
 }
