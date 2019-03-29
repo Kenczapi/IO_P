@@ -30,8 +30,19 @@ namespace Projekt_InzOpr
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
+            this.obejrzaneFilmyTableAdapter.Fill(this.historiaOgladaniaDataSet.ObejrzaneFilmy);
 
-                using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
+            if(dataGridView1.Rows.Count > 1) //jest cos w tabeli
+            {
+                ID_Filmu = Convert.ToInt32(dataGridView1[0, 0].Value) + 1;
+                Player.URL = CurrentVideoPath = dataGridView1[0, 1].Value.ToString();
+                this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[0, 2].Value);
+                if (SetCurrentTitle())
+                    this.Text = Title;
+                trackBarDzwiek.Value = Player.settings.volume;
+            }
+
+           /* using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
                 {
                     string line = sr.ReadLine();
                     if (File.Exists(line))
@@ -45,11 +56,9 @@ namespace Projekt_InzOpr
                         trackBarDzwiek.Value = Player.settings.volume;
                         czas();
                     }
-                }
+                }*/
 
             CheckPlayPauseButton();
-            if (SetCurrentTitle())
-                this.Text = Title;
 
             this.panelHistoria.Height = Player.Height;
             this.dataGridView1.Height = panelHistoria.Height - 100;
@@ -100,7 +109,7 @@ namespace Projekt_InzOpr
         private void czas()
         {
             var clip = Player.newMedia(CurrentVideoPath);
-            this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
+            this.CalyTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
             trackBarCzas.Maximum = (int)clip.duration + 1;
             timer1.Start();
         }
@@ -191,7 +200,7 @@ namespace Projekt_InzOpr
             trackBarCzas.Value = (int)Player.Ctlcontrols.currentPosition;
             lATime.Text = Player.Ctlcontrols.currentPositionString;
 
-            if (lATime.Text == lTime.Text)
+            if (lATime.Text == CalyTime.Text)
             {
                 timer1.Stop();
             }
@@ -207,8 +216,30 @@ namespace Projekt_InzOpr
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
+            //this.FormBorderStyle = FormBorderStyle.None;
+            //this.WindowState = FormWindowState.Maximized;
+
+            if(dataGridView1.RowCount < 2) //puste badz 1 film
+            {
+                return;
+            }
+
+            timer1.Stop();
+            Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.RowCount-2].Value.ToString();
+            if (SetCurrentTitle())
+                this.Text = Title;
+            if (dataGridView1[2, dataGridView1.RowCount-2].Value == null)
+            {
+                this.Player.Ctlcontrols.currentPosition = 0;
+            }
+            else
+            {
+                this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.RowCount-2].Value);
+            }
+            CalyTime.Text = Player.currentMedia.durationString;
+            timer1.Start();
+
+            przesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 2].Value));
         }
 
         private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
@@ -266,8 +297,6 @@ namespace Projekt_InzOpr
                     MessageBox.Show(exc.ToString());
                 }
             }
-            else
-                MessageBox.Show("Nic nie jest odtwarzane");
         }
 
         private void Okno_FormClosing(object sender, FormClosingEventArgs e)
@@ -306,7 +335,8 @@ namespace Projekt_InzOpr
             {
                 timer1.Stop();
                 Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.CurrentRow.Index].Value.ToString();
-                SetCurrentTitle();
+                if (SetCurrentTitle())
+                    this.Text = Title;
                 if (dataGridView1[2, dataGridView1.CurrentRow.Index].Value == null)
                 {
                     this.Player.Ctlcontrols.currentPosition = 0;
@@ -315,15 +345,18 @@ namespace Projekt_InzOpr
                 {     
                     this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.CurrentRow.Index].Value);
                 }
-                lTime.Text = Player.currentMedia.durationString;
                 timer1.Start();
+                CalyTime.Text = this.Player.currentMedia.durationString;
 
                 przesunElementHistorii(Convert.ToInt32(dataGridView1[0,dataGridView1.CurrentRow.Index].Value));
+
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.ToString());
             }
+
+
         }
 
         private void przesunElementHistorii(int old_id)
