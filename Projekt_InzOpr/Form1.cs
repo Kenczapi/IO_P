@@ -116,18 +116,6 @@ namespace Projekt_InzOpr
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string jakiesInfo;
-
-            if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
-            {
-                jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
-                    Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
-                    "\n" + ID_Filmu.ToString() +
-                    "\n==END==\n";
-
-                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
-            }
-
             this.Close();
         }
 
@@ -236,8 +224,9 @@ namespace Projekt_InzOpr
             {
                 this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.RowCount-2].Value);
             }
-            CalyTime.Text = Player.currentMedia.durationString;
             timer1.Start();
+
+            czas();
 
             przesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 2].Value));
         }
@@ -346,7 +335,8 @@ namespace Projekt_InzOpr
                     this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.CurrentRow.Index].Value);
                 }
                 timer1.Start();
-                CalyTime.Text = this.Player.currentMedia.durationString;
+
+                czas();
 
                 przesunElementHistorii(Convert.ToInt32(dataGridView1[0,dataGridView1.CurrentRow.Index].Value));
 
@@ -355,7 +345,6 @@ namespace Projekt_InzOpr
             {
                 MessageBox.Show(exc.ToString());
             }
-
 
         }
 
