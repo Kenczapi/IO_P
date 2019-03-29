@@ -21,7 +21,7 @@ namespace Projekt_InzOpr
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
             this.WindowState = FormWindowState.Normal;
             Player.stretchToFit = true;
-
+            
             this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.MultiSelect = false;
@@ -30,8 +30,9 @@ namespace Projekt_InzOpr
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
+            wyglad();
 
-                using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
+            using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
                 {
                     string line = sr.ReadLine();
                     if (File.Exists(line))
@@ -102,6 +103,7 @@ namespace Projekt_InzOpr
             var clip = Player.newMedia(CurrentVideoPath);
             this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
             trackBarCzas.Maximum = (int)clip.duration + 1;
+            
             timer1.Start();
         }
 
@@ -152,8 +154,6 @@ namespace Projekt_InzOpr
 
         private void Player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
-            if (!Player.fullScreen)
-            {
                 //panel od sterowania
                 if (e.fY > Player.Height - panelSterowanie.Height)
                 {
@@ -176,19 +176,14 @@ namespace Projekt_InzOpr
                 {
                     panelHistoria.Visible = false;
                 }
-            }
-            else
-            {
-
-
-            }
 
         }
 
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            trackBarCzas.Value = (int)Player.Ctlcontrols.currentPosition;
+            trackBarCzas.Value = Player.Ctlcontrols.currentPosition;
+        
             lATime.Text = Player.Ctlcontrols.currentPositionString;
 
             if (lATime.Text == lTime.Text)
@@ -202,13 +197,38 @@ namespace Projekt_InzOpr
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
         {
-            Player.Ctlcontrols.currentPosition = (double)trackBarCzas.Value;
+            
+            Player.Ctlcontrols.currentPosition = trackBarCzas.Value;
+           
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
+            if (button4.Text == "Fullscreen")
+            {
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.WindowState = FormWindowState.Maximized;
+                button4.Text = "Normal";
+
+            }
+            else
+            {
+                this.FormBorderStyle = FormBorderStyle.Fixed3D;
+                this.WindowState = FormWindowState.Normal;
+                button4.Text = "Fullscreen";
+            }
+            wyglad();
+        }
+        private void wyglad()
+        {
+            buttonOtworz.Location = new Point(panelSterowanie.Width - buttonOtworz.Width - 10, buttonOtworz.Location.Y);
+            buttonZamknij.Location = new Point(buttonOtworz.Location.X, buttonZamknij.Location.Y);
+            trackBarDzwiek.Location = new Point(buttonOtworz.Location.X - trackBarDzwiek.Width - 10, trackBarDzwiek.Location.Y);
+            lTime.Location = new Point(trackBarDzwiek.Location.X - lTime.Width - 10, lTime.Location.Y);
+            label1.Location = new Point(lTime.Location.X - label1.Width - 5, label1.Location.Y);
+            lATime.Location = new Point(label1.Location.X - lATime.Width - 5, lATime.Location.Y);
+            trackBarCzas.Width = lATime.Location.X - trackBarCzas.Location.X - 10;
+
         }
 
         private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
@@ -234,7 +254,9 @@ namespace Projekt_InzOpr
         {
             if (e.KeyChar == (char)27) //wcisniecie escape
             {
-                //to do: wylaczenie fullscreena
+                this.FormBorderStyle = FormBorderStyle.Fixed3D;
+                this.WindowState = FormWindowState.Normal;
+                button4.Text = "Fullscreen";
             }
         }
 
