@@ -32,25 +32,20 @@ namespace Projekt_InzOpr
         {
             wyglad();
 
-            using (StreamReader sr = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt")) //zeby bylo widoczne tylko lokalnie
-                {
-                    string line = sr.ReadLine();
-                    if (File.Exists(line))
-                    {
-                        Player.URL = CurrentVideoPath = line;
-                        line = sr.ReadLine();
-                        Player.Ctlcontrols.currentPosition = Convert.ToDouble(line);
-                        line = sr.ReadLine();
-                        ID_Filmu = Convert.ToInt32(line);
+            this.obejrzaneFilmyTableAdapter.Fill(this.historiaOgladaniaDataSet.ObejrzaneFilmy);
 
-                        trackBarDzwiek.Value = Player.settings.volume;
-                        czas();
-                    }
-                }
+            if (dataGridView1.Rows.Count > 1) //jest cos w tabeli
+            {
+                ID_Filmu = Convert.ToInt32(dataGridView1[0, 0].Value) + 1;
+                Player.URL = CurrentVideoPath = dataGridView1[0, 1].Value.ToString();
+                this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[0, 2].Value);
+                if (SetCurrentTitle())
+                    this.Text = Title;
+                trackBarDzwiek.Value = Player.settings.volume;
+            }
+
 
             CheckPlayPauseButton();
-            if (SetCurrentTitle())
-                this.Text = Title;
 
             this.panelHistoria.Height = Player.Height;
             this.dataGridView1.Height = panelHistoria.Height - 100;
@@ -90,9 +85,11 @@ namespace Projekt_InzOpr
                 Player.URL = CurrentVideoPath;
                 czas();
                 CheckPlayPauseButton();
-                SetCurrentTitle();
-                this.Text = Title;
-                CzyByloZmieniane = true;
+                if(SetCurrentTitle())
+                {
+                    this.Text = Title;
+                }
+                    CzyByloZmieniane = true;
             }
             else
                 return;
@@ -109,18 +106,6 @@ namespace Projekt_InzOpr
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string jakiesInfo;
-
-            if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
-            {
-                jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
-                    Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
-                    "\n" + ID_Filmu.ToString() +
-                    "\n==END==\n";
-
-                File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
-            }
-
             this.Close();
         }
 
@@ -251,9 +236,10 @@ namespace Projekt_InzOpr
         }
 
         private void Okno_KeyPress(object sender, KeyPressEventArgs e)
-        {
+        { 
             if (e.KeyChar == (char)27) //wcisniecie escape
             {
+                MessageBox.Show("PPPPP");
                 this.FormBorderStyle = FormBorderStyle.Fixed3D;
                 this.WindowState = FormWindowState.Normal;
                 button4.Text = "Fullscreen";
@@ -288,8 +274,6 @@ namespace Projekt_InzOpr
                     MessageBox.Show(exc.ToString());
                 }
             }
-            else
-                MessageBox.Show("Nic nie jest odtwarzane");
         }
 
         private void Okno_FormClosing(object sender, FormClosingEventArgs e)
@@ -300,20 +284,6 @@ namespace Projekt_InzOpr
                 return;
             }
 
-            if (this.CurrentVideoPath != null)
-            {
-                string jakiesInfo;
-
-                if (Player.playState == WMPLib.WMPPlayState.wmppsPaused || Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
-                {
-                    jakiesInfo = CurrentVideoPath + "\n" + //sciezka do pliku aktualnie odtwarzanego
-                    Player.Ctlcontrols.currentPosition + //aktualny czas odtwarzanego filmu/czegokolwiek
-                    "\n" + ID_Filmu.ToString() +
-                    "\n==END==\n";
-
-                    File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "UDT.txt", jakiesInfo);
-                }
-            }
         }
 
         private void buttonWczytaj_Click(object sender, EventArgs e)
@@ -328,19 +298,22 @@ namespace Projekt_InzOpr
             {
                 timer1.Stop();
                 Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.CurrentRow.Index].Value.ToString();
-                SetCurrentTitle();
+                if (SetCurrentTitle())
+                    this.Text = Title;
                 if (dataGridView1[2, dataGridView1.CurrentRow.Index].Value == null)
                 {
                     this.Player.Ctlcontrols.currentPosition = 0;
                 }
                 else
-                {     
+                {
                     this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.CurrentRow.Index].Value);
                 }
-                lTime.Text = Player.currentMedia.durationString;
                 timer1.Start();
 
-                przesunElementHistorii(Convert.ToInt32(dataGridView1[0,dataGridView1.CurrentRow.Index].Value));
+                czas();
+
+                przesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.CurrentRow.Index].Value));
+
             }
             catch (Exception exc)
             {
@@ -388,6 +361,10 @@ namespace Projekt_InzOpr
                 CzyByloZmieniane = false;
                 DodajDoHistorii();
             }
+            else if(e.newState == 1)
+            {
+                buttonPlay.Text = "Play";
+            }
         }
 
         private void updateCzasZatrzymania()
@@ -410,6 +387,43 @@ namespace Projekt_InzOpr
                 {
                     MessageBox.Show(exc.ToString());
                 }
+            }
+        }
+
+        private void buttonPoprzedni_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.RowCount < 2) //puste badz 1 film
+            {
+                return;
+            }
+
+            timer1.Stop();
+            Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.RowCount - 2].Value.ToString();
+            if (SetCurrentTitle())
+                this.Text = Title;
+            if (dataGridView1[2, dataGridView1.RowCount - 2].Value == null)
+            {
+                this.Player.Ctlcontrols.currentPosition = 0;
+            }
+            else
+            {
+                this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.RowCount - 2].Value);
+            }
+            timer1.Start();
+
+            czas();
+
+            przesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 2].Value));
+        }
+
+        private void Okno_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) //wcisniecie escape
+            {
+              
+                this.FormBorderStyle = FormBorderStyle.Fixed3D;
+                this.WindowState = FormWindowState.Normal;
+                button4.Text = "Fullscreen";
             }
         }
     }

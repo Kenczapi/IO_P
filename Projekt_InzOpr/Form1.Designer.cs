@@ -36,6 +36,7 @@ namespace Projekt_InzOpr
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Okno));
             this.Player = new AxWMPLib.AxWindowsMediaPlayer();
             this.panelSterowanie = new System.Windows.Forms.Panel();
+            this.buttonPoprzedni = new System.Windows.Forms.Button();
             this.trackBarCzas = new Projekt_InzOpr.Slider2();
             this.trackBarDzwiek = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
@@ -87,7 +88,9 @@ namespace Projekt_InzOpr
             // 
             this.panelSterowanie.AutoSize = true;
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panelSterowanie.BackColor = System.Drawing.SystemColors.Control;
+            this.panelSterowanie.BackColor = System.Drawing.Color.Transparent;
+            this.panelSterowanie.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panelSterowanie.BackgroundImage")));
+            this.panelSterowanie.Controls.Add(this.buttonPoprzedni);
             this.panelSterowanie.Controls.Add(this.trackBarCzas);
             this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
             this.panelSterowanie.Controls.Add(this.label1);
@@ -98,19 +101,30 @@ namespace Projekt_InzOpr
             this.panelSterowanie.Controls.Add(this.buttonOtworz);
             this.panelSterowanie.Controls.Add(this.buttonPlay);
             this.panelSterowanie.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelSterowanie.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.panelSterowanie.Location = new System.Drawing.Point(0, 838);
             this.panelSterowanie.Name = "panelSterowanie";
             this.panelSterowanie.Size = new System.Drawing.Size(1276, 79);
             this.panelSterowanie.TabIndex = 1;
             this.panelSterowanie.Visible = false;
             // 
+            // buttonPoprzedni
+            // 
+            this.buttonPoprzedni.Location = new System.Drawing.Point(3, 49);
+            this.buttonPoprzedni.Name = "buttonPoprzedni";
+            this.buttonPoprzedni.Size = new System.Drawing.Size(75, 23);
+            this.buttonPoprzedni.TabIndex = 12;
+            this.buttonPoprzedni.Text = "Poprzedni";
+            this.buttonPoprzedni.UseVisualStyleBackColor = true;
+            this.buttonPoprzedni.Click += new System.EventHandler(this.buttonPoprzedni_Click);
+            // 
             // trackBarCzas
             // 
             this.trackBarCzas.KnobImage = global::Projekt_InzOpr.Properties.Resources.knob;
-            this.trackBarCzas.Location = new System.Drawing.Point(84, 28);
+            this.trackBarCzas.Location = new System.Drawing.Point(151, 28);
             this.trackBarCzas.Name = "trackBarCzas";
             this.trackBarCzas.Orientations = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarCzas.Size = new System.Drawing.Size(895, 25);
+            this.trackBarCzas.Size = new System.Drawing.Size(828, 25);
             this.trackBarCzas.TabIndex = 11;
             this.trackBarCzas.Text = "slider21";
             this.trackBarCzas.Value = 0D;
@@ -155,9 +169,9 @@ namespace Projekt_InzOpr
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(3, 49);
+            this.button4.Location = new System.Drawing.Point(101, 30);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(26, 23);
             this.button4.TabIndex = 3;
             this.button4.Text = "Fullscreen";
             this.button4.UseVisualStyleBackColor = true;
@@ -323,6 +337,7 @@ namespace Projekt_InzOpr
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Okno_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Okno_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Okno_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
             this.panelSterowanie.ResumeLayout(false);
@@ -366,6 +381,7 @@ namespace Projekt_InzOpr
         private DataGridViewTextBoxColumn momentZatrzymaniaDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn tytulDataGridViewTextBoxColumn1;
         private Slider2 trackBarCzas;
+        private Button buttonPoprzedni;
     }
 }
 
