@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="libvideo">
+      <HintPath>..\DoSzukania\libvideo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -60,6 +63,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="YoutubeSearch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YoutubeSearch.NETSTANDARD.1.0.0\lib\netstandard2.0\YoutubeSearch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataClasses1.designer.cs">
@@ -73,6 +79,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Historia.cs">
+      <DependentUpon>Historia.dbml</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HistoriaOgladaniaDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -83,9 +93,13 @@
     <Compile Include="Slider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Slider2.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Szukanie.cs">
+      <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Szukanie.Designer.cs">
+      <DependentUpon>Szukanie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Video.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -99,6 +113,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Szukanie.resx">
+      <DependentUpon>Szukanie.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="DataClasses1.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
@@ -118,6 +135,8 @@
     <None Include="HistoriaOgladaniaDataSet.xss">
       <DependentUpon>HistoriaOgladaniaDataSet.xsd</DependentUpon>
     </None>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\Video.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -166,7 +185,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bitmap1.bmp" />
     <Content Include="HistoriaOgladania.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -174,8 +192,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>HistoriaOgladania.mdf</DependentUpon>
     </Content>
-    <None Include="knob.png" />
-    <None Include="Properties\aaaaa.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

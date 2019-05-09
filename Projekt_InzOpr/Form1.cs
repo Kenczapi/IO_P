@@ -14,7 +14,7 @@ namespace Projekt_InzOpr
 {
     public partial class Okno : Form
     {
-
+        private bool czyYT = false;
         public Okno()
         {
             InitializeComponent();
@@ -26,11 +26,12 @@ namespace Projekt_InzOpr
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Descending);
+            szukanie1.Clicked += YouTube_Play;
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
-            wyglad();
+            Wyglad();
 
             this.obejrzaneFilmyTableAdapter.Fill(this.historiaOgladaniaDataSet.ObejrzaneFilmy);
 
@@ -54,7 +55,7 @@ namespace Projekt_InzOpr
             CzyByloZmieniane = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ButtonPlay_Click(object sender, EventArgs e)
         {
             if (Player.URL == string.Empty)
             {
@@ -77,13 +78,14 @@ namespace Projekt_InzOpr
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonOtworz_Click(object sender, EventArgs e)
         {
+            czyYT = false;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 CurrentVideoPath = openFileDialog1.FileName;
                 Player.URL = CurrentVideoPath;
-                czas();
+                Czas();
                 CheckPlayPauseButton();
                 if(SetCurrentTitle())
                 {
@@ -95,47 +97,41 @@ namespace Projekt_InzOpr
                 return;
         }
 
-        private void czas()
+        private void Czas()
         {
             var clip = Player.newMedia(CurrentVideoPath);
-            this.lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
-            trackBarCzas.Maximum = (int)clip.duration + 1;
-            
+            if (!czyYT)
+            {
+                lTime.Text = TimeSpan.FromSeconds(clip.duration).ToString();
+                trackBarCzas.Maximum = (int)clip.duration + 1;
+            }
+            else
+            {
+                lTime.Text = TimeSpan.FromSeconds(Duration(szukanie1.Url)).ToString();
+                trackBarCzas.Maximum = (int)Duration(szukanie1.Url) + 1;
+            }
             timer1.Start();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private double Duration(String url)
+        {
+            int index = url.IndexOf("dur");
+            String str1 = szukanie1.Url.Remove(0, index + 4);
+
+            index = 0;
+            while(!Char.IsLetter(str1[index]))
+            {
+                ++index;
+            }
+
+            return double.Parse(str1.Remove(index - 1), System.Globalization.CultureInfo.InvariantCulture);
+           
+            
+        }
+        private void ButtonZamknij_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-        private string CurrentVideoPath { get; set; }
-
-        private string Title { get; set; }
-
-        private bool CzyByloZmieniane { get; set; }
-
-        private bool SetCurrentTitle()
-        {
-            if (this.CurrentVideoPath == null)
-            {
-                MessageBox.Show("Pusta sciezka, nie mozna okreslic tytulu");
-                Title = string.Empty;
-                return false;
-            }
-
-            int lastBackslash = CurrentVideoPath.LastIndexOf('\\', CurrentVideoPath.Length - 1);
-            if (lastBackslash < 0)
-            {
-                MessageBox.Show("Nie mozna okreslic tytulu");
-                Title = string.Empty;
-                return false;
-            }
-
-            Title = CurrentVideoPath.Substring(lastBackslash + 1);
-            return true;
-        }
-
 
         private void Player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
@@ -165,7 +161,7 @@ namespace Projekt_InzOpr
         }
 
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             trackBarCzas.Value = Player.Ctlcontrols.currentPosition;
         
@@ -177,17 +173,17 @@ namespace Projekt_InzOpr
             }
 
             if ((int)this.Player.Ctlcontrols.currentPosition % 30 == 0)
-                updateCzasZatrzymania();
+                UpdateCzasZatrzymania();
         }
 
-        private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
+        private void TrackBarCzas_MouseCaptureChanged(object sender, EventArgs e)
         {
             
             Player.Ctlcontrols.currentPosition = trackBarCzas.Value;
            
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void ButtonFull_Click(object sender, EventArgs e)
         {
             if (button4.Text == "Fullscreen")
             {
@@ -202,9 +198,9 @@ namespace Projekt_InzOpr
                 this.WindowState = FormWindowState.Normal;
                 button4.Text = "Fullscreen";
             }
-            wyglad();
+            Wyglad();
         }
-        private void wyglad()
+        private void Wyglad()
         {
             buttonOtworz.Location = new Point(panelSterowanie.Width - buttonOtworz.Width - 10, buttonOtworz.Location.Y);
             buttonZamknij.Location = new Point(buttonOtworz.Location.X, buttonZamknij.Location.Y);
@@ -216,9 +212,9 @@ namespace Projekt_InzOpr
 
         }
 
-        private void trackBar2_MouseCaptureChanged(object sender, EventArgs e)
+        private void TrackBarDzwiek_MouseCaptureChanged(object sender, EventArgs e)
         {
-            Player.settings.volume = trackBarDzwiek.Value;
+            Player.settings.volume = (int)trackBarDzwiek.Value;
         }
 
         private void CheckPlayPauseButton()
@@ -246,36 +242,6 @@ namespace Projekt_InzOpr
             }
         }
 
-        private static int ID_Filmu = 1;
-
-        private void DodajDoHistorii()
-        {
-            if (this.Player.currentMedia != null)
-            {
-                try
-                {
-                    using (DataClasses1DataContext PolaczenieZBaza = new DataClasses1DataContext())
-                    {
-                        var Dane = new ObejrzaneFilmy();
-                        Dane.Id = ID_Filmu++;
-                        Dane.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
-                        Dane.SciezkaDoPliku = CurrentVideoPath;
-                        if (Title.Length < 50)
-                            Dane.Tytul = Title;
-                        else
-                            Dane.Tytul = Title.Substring(0, 50);
-
-                        PolaczenieZBaza.ObejrzaneFilmies.InsertOnSubmit(Dane);
-                        PolaczenieZBaza.SubmitChanges();
-                    }
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.ToString());
-                }
-            }
-        }
-
         private void Okno_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (MessageBox.Show("", "Jesteś pewien?", MessageBoxButtons.YesNo) == DialogResult.No)
@@ -284,136 +250,6 @@ namespace Projekt_InzOpr
                 return;
             }
 
-        }
-
-        private void buttonWczytaj_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 1 || dataGridView1.SelectedRows == null)
-            {
-                MessageBox.Show("Nic nie wybrales");
-                return;
-            }
-
-            try
-            {
-                timer1.Stop();
-                Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.CurrentRow.Index].Value.ToString();
-                if (SetCurrentTitle())
-                    this.Text = Title;
-                if (dataGridView1[2, dataGridView1.CurrentRow.Index].Value == null)
-                {
-                    this.Player.Ctlcontrols.currentPosition = 0;
-                }
-                else
-                {
-                    this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.CurrentRow.Index].Value);
-                }
-                timer1.Start();
-
-                czas();
-
-                przesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.CurrentRow.Index].Value));
-
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.ToString());
-            }
-        }
-
-        private void przesunElementHistorii(int old_id)
-        {
-            using (DataClasses1DataContext Polaczenie = new DataClasses1DataContext())
-            {
-                var query =
-                    from Film in Polaczenie.ObejrzaneFilmies
-                    where Film.Id == old_id
-                    select Film; //znajduje film o podanym ID
-
-                ObejrzaneFilmy nowy = new ObejrzaneFilmy();
-                foreach (ObejrzaneFilmy FM in query)
-                {
-                    nowy.Id = ID_Filmu++;
-                    nowy.MomentZatrzymania = FM.MomentZatrzymania;
-                    nowy.SciezkaDoPliku = FM.SciezkaDoPliku;
-                    nowy.Tytul = FM.Tytul;
-                    try
-                    {
-                        Polaczenie.ObejrzaneFilmies.InsertOnSubmit(nowy);
-                        Polaczenie.ObejrzaneFilmies.DeleteOnSubmit(FM);
-                        Polaczenie.SubmitChanges();
-                    }
-                    catch (Exception exc)
-                    {
-                        MessageBox.Show(exc.ToString());
-                    }
-                }
-
-            }
-            dataGridView1.Update();
-        }
-
-
-        private void Player_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
-        {         
-            if(e.newState == 3 && CzyByloZmieniane == true)//odtwarza i media byly zmienione
-            {
-                CzyByloZmieniane = false;
-                DodajDoHistorii();
-            }
-            else if(e.newState == 1)
-            {
-                buttonPlay.Text = "Play";
-            }
-        }
-
-        private void updateCzasZatrzymania()
-        {
-            DataClasses1DataContext Polaczenie = new DataClasses1DataContext();
-            var query =
-                    from Film in Polaczenie.ObejrzaneFilmies
-                    where Film.Id == ID_Filmu-1
-                    select Film; //znajduje ostatni dodany do historii film
-
-            ObejrzaneFilmy nowy = new ObejrzaneFilmy();
-            foreach (ObejrzaneFilmy FM in query)
-            {
-                FM.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
-                try
-                {
-                    Polaczenie.SubmitChanges();
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.ToString());
-                }
-            }
-        }
-
-        private void buttonPoprzedni_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.RowCount < 2) //puste badz 1 film
-            {
-                return;
-            }
-
-            timer1.Stop();
-            Player.URL = CurrentVideoPath = dataGridView1[1, dataGridView1.RowCount - 2].Value.ToString();
-            if (SetCurrentTitle())
-                this.Text = Title;
-            if (dataGridView1[2, dataGridView1.RowCount - 2].Value == null)
-            {
-                this.Player.Ctlcontrols.currentPosition = 0;
-            }
-            else
-            {
-                this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView1[2, dataGridView1.RowCount - 2].Value);
-            }
-            timer1.Start();
-
-            czas();
-
-            przesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 2].Value));
         }
 
         private void Okno_KeyDown(object sender, KeyEventArgs e)
@@ -425,6 +261,20 @@ namespace Projekt_InzOpr
                 this.WindowState = FormWindowState.Normal;
                 button4.Text = "Fullscreen";
             }
+        }
+
+        private void YouTube_Play()
+        {
+            
+            czyYT = true;
+            Czas();
+            Player.URL = szukanie1.Url;
+
+        }
+
+        private void ButtonYT_Click(object sender, EventArgs e)
+        {
+            szukanie1.Visible = true;
         }
     }
 }
