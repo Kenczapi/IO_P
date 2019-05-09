@@ -99,6 +99,9 @@
     <Compile Include="Szukanie.Designer.cs">
       <DependentUpon>Szukanie.cs</DependentUpon>
     </Compile>
+    <Compile Include="TPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Video.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

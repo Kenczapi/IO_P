@@ -124,7 +124,7 @@ namespace Projekt_InzOpr
                 ++index;
             }
 
-            return double.Parse(str1.Remove(index - 1), System.Globalization.CultureInfo.InvariantCulture);
+            return Math.Round(double.Parse(str1.Remove(index - 1), System.Globalization.CultureInfo.InvariantCulture));
            
             
         }
@@ -185,30 +185,34 @@ namespace Projekt_InzOpr
 
         private void ButtonFull_Click(object sender, EventArgs e)
         {
-            if (button4.Text == "Fullscreen")
+            if (buttonFull.Text == "Fullscreen")
             {
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
-                button4.Text = "Normal";
+                buttonFull.Text = "Normal";
 
             }
             else
             {
                 this.FormBorderStyle = FormBorderStyle.Fixed3D;
                 this.WindowState = FormWindowState.Normal;
-                button4.Text = "Fullscreen";
+                buttonFull.Text = "Fullscreen";
             }
             Wyglad();
         }
         private void Wyglad()
         {
-            buttonOtworz.Location = new Point(panelSterowanie.Width - buttonOtworz.Width - 10, buttonOtworz.Location.Y);
-            buttonZamknij.Location = new Point(buttonOtworz.Location.X, buttonZamknij.Location.Y);
-            trackBarDzwiek.Location = new Point(buttonOtworz.Location.X - trackBarDzwiek.Width - 10, trackBarDzwiek.Location.Y);
-            lTime.Location = new Point(trackBarDzwiek.Location.X - lTime.Width - 10, lTime.Location.Y);
+            ButtonZamknij.Location = new Point(this.Width - ButtonZamknij.Width - 30, ButtonZamknij.Location.Y);
+            trackBarCzas.Width = ButtonZamknij.Location.X + ButtonZamknij.Width - trackBarCzas.Location.X;
+            lTime.Location = new Point(ButtonZamknij.Location.X - lTime.Width - 20, lTime.Location.Y);
             label1.Location = new Point(lTime.Location.X - label1.Width - 5, label1.Location.Y);
             lATime.Location = new Point(label1.Location.X - lATime.Width - 5, lATime.Location.Y);
-            trackBarCzas.Width = lATime.Location.X - trackBarCzas.Location.X - 10;
+            trackBarDzwiek.Location = new Point(lATime.Location.X - trackBarDzwiek.Width - 50, trackBarDzwiek.Location.Y);
+            buttonPlay.Location = new Point(panelSterowanie.Width / 2 - buttonPlay.Width / 2, buttonPlay.Location.Y);
+            buttonPoprzedni.Location = new Point(buttonPlay.Location.X - buttonPoprzedni.Width - 5, buttonPoprzedni.Location.Y);
+            buttonOtworz.Location = new Point(buttonPlay.Location.X + buttonPlay.Width + 5, buttonOtworz.Location.Y);
+            buttonYT.Location = new Point(buttonOtworz.Location.X + buttonOtworz.Width + 25, buttonYT.Location.Y);
+            buttonFull.Location = new Point(trackBarCzas.Location.X, buttonFull.Location.Y);
 
         }
 
@@ -238,7 +242,7 @@ namespace Projekt_InzOpr
                 MessageBox.Show("PPPPP");
                 this.FormBorderStyle = FormBorderStyle.Fixed3D;
                 this.WindowState = FormWindowState.Normal;
-                button4.Text = "Fullscreen";
+                buttonFull.Text = "Fullscreen";
             }
         }
 
@@ -259,7 +263,7 @@ namespace Projekt_InzOpr
               
                 this.FormBorderStyle = FormBorderStyle.Fixed3D;
                 this.WindowState = FormWindowState.Normal;
-                button4.Text = "Fullscreen";
+                buttonFull.Text = "Fullscreen";
             }
         }
 
@@ -269,12 +273,20 @@ namespace Projekt_InzOpr
             czyYT = true;
             Czas();
             Player.URL = szukanie1.Url;
-
+            CheckPlayPauseButton();
         }
 
         private void ButtonYT_Click(object sender, EventArgs e)
         {
             szukanie1.Visible = true;
+        }
+
+        private void Player_ClickEvent(object sender, AxWMPLib._WMPOCXEvents_ClickEvent e)
+        {
+            if(szukanie1.Visible == true)
+            {
+                szukanie1.Visible = false;
+            }
         }
     }
 }

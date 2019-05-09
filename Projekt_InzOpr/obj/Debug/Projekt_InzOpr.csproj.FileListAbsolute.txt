@@ -95,7 +95,6 @@ C:\Users\snowy\Desktop\hahaha\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\ob
 C:\Users\snowy\Desktop\hahaha\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.CoreCompileInputs.cache
 C:\Users\snowy\Desktop\hahaha\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.exe
 C:\Users\snowy\Desktop\hahaha\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.pdb
-C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csprojAssemblyReference.cache
 C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Interop.WMPLib.dll
 C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\AxInterop.WMPLib.dll
 C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.ResolveComReference.cache
@@ -213,3 +212,4 @@ C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\b
 C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.exe.config
 C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csproj.CopyComplete
 C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\libvideo.dll
+C:\Users\szkru\Desktop\Projekt\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csprojAssemblyReference.cache

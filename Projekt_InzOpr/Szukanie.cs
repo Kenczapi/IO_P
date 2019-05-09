@@ -61,9 +61,7 @@ namespace Projekt_InzOpr
             var youTube = YouTube.Default;
             try
             {
-                var video = youTube.GetVideo(uri);
-                Url = video.Uri;
-                
+                Url = youTube.GetVideo(uri).Uri;
                 this.Visible = false;
             }
             catch(Exception)
