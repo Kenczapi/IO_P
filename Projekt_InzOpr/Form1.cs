@@ -27,12 +27,20 @@ namespace Projekt_InzOpr
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Sort(this.dataGridView1.Columns[0], ListSortDirection.Descending);
             szukanie1.Clicked += YouTube_Play;
+
+            //YT panel historii
+            this.dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.MultiSelect = false;
+            this.dataGridView2.Sort(this.dataGridView2.Columns[0], ListSortDirection.Descending);
+
         }
 
         private void Form1_Load(object sender, EventArgs e) //nie pokazuje w ogole okna aplikacji
         {
             Wyglad();
 
+            this.yTTableAdapter.Fill(this.historiaYoutubeDataSet.YT);
             this.obejrzaneFilmyTableAdapter.Fill(this.historiaOgladaniaDataSet.ObejrzaneFilmy);
 
             if (dataGridView1.Rows.Count > 1) //jest cos w tabeli
@@ -50,6 +58,11 @@ namespace Projekt_InzOpr
 
             this.panelHistoria.Height = Player.Height;
             this.dataGridView1.Height = panelHistoria.Height - 100;
+
+            this.panelYT.Height = Player.Height;
+            this.dataGridView2.Height = panelYT.Height - 100;
+
+            buttonYTWczytaj.Location = new Point(panelYT.Width / 2 - buttonYTWczytaj.Width / 2, panelYT.Height - 50 - buttonYTWczytaj.Height / 2);
 
             buttonWczytaj.Location = new Point(panelHistoria.Width / 2 - buttonWczytaj.Width / 2, panelHistoria.Height - 50 - buttonWczytaj.Height / 2);
             CzyByloZmieniane = false;
@@ -145,8 +158,8 @@ namespace Projekt_InzOpr
                     panelSterowanie.Visible = false;
                 }
 
-                //panel od historii odtwarzania
-                if(e.fX > Player.Width - panelHistoria.Width)
+                //panel od historii normalnej
+                if(e.fX > Player.Width - panelHistoria.Width - 10)
                 {
                     dataGridView1.Height = panelHistoria.Height - 100;
                     this.obejrzaneFilmyTableAdapter.Fill(this.historiaOgladaniaDataSet.ObejrzaneFilmy);
@@ -158,6 +171,19 @@ namespace Projekt_InzOpr
                     panelHistoria.Visible = false;
                 }
 
+
+                //panel od hisotrii YT
+                if(e.fX < panelYT.Width + 10)
+                {
+                dataGridView2.Height = panelYT.Height - 100;
+                this.yTTableAdapter.Fill(this.historiaYoutubeDataSet.YT);
+                buttonYTWczytaj.Location = new Point(panelYT.Width / 2 - buttonYTWczytaj.Width / 2, panelYT.Height - 50 - buttonYTWczytaj.Height / 2);
+                panelYT.Visible = true;
+                }
+                else
+                {
+                panelYT.Visible = false;
+                }
         }
 
 
@@ -269,11 +295,11 @@ namespace Projekt_InzOpr
 
         private void YouTube_Play()
         {
-            
             czyYT = true;
             Czas();
             Player.URL = szukanie1.Url;
             CheckPlayPauseButton();
+            DodajDoHistorii();
         }
 
         private void ButtonYT_Click(object sender, EventArgs e)
@@ -288,5 +314,6 @@ namespace Projekt_InzOpr
                 szukanie1.Visible = false;
             }
         }
+
     }
 }

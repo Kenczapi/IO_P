@@ -17,6 +17,8 @@ namespace Projekt_InzOpr
     public partial class Szukanie : UserControl
     {
         public String Url;
+
+        public String TitleYT;
         public Szukanie()
         {
             InitializeComponent();
@@ -58,6 +60,7 @@ namespace Projekt_InzOpr
         private void DataGridView1_DoubleClick(object sender, EventArgs e)
         {
             string uri = dataGridView1[3, dataGridView1.CurrentRow.Index].Value.ToString();
+            TitleYT = dataGridView1[1, dataGridView1.CurrentRow.Index].Value.ToString();
             var youTube = YouTube.Default;
             try
             {

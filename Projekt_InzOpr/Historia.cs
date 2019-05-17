@@ -38,32 +38,66 @@ namespace Projekt_InzOpr
 
         private static int ID_Filmu = 1;
 
+        private static int ID_YT = 1;
+
         private void DodajDoHistorii()
         {
-            if (this.Player.currentMedia != null)
+            if (!czyYT)
             {
-                try
+                if (this.Player.currentMedia != null)
                 {
-                    using (DataClasses1DataContext PolaczenieZBaza = new DataClasses1DataContext())
+                    try
                     {
-                        var Dane = new ObejrzaneFilmy
+                        using (DataClasses1DataContext PolaczenieZBaza = new DataClasses1DataContext())
                         {
-                            Id = ID_Filmu++,
-                            MomentZatrzymania = this.Player.Ctlcontrols.currentPosition,
-                            SciezkaDoPliku = CurrentVideoPath
-                        };
-                        if (Title.Length < 50)
-                            Dane.Tytul = Title;
-                        else
-                            Dane.Tytul = Title.Substring(0, 50);
+                            var Dane = new ObejrzaneFilmy
+                            {
+                                Id = ID_Filmu++,
+                                MomentZatrzymania = this.Player.Ctlcontrols.currentPosition,
+                                SciezkaDoPliku = CurrentVideoPath
+                            };
+                            if (Title.Length < 50)
+                                Dane.Tytul = Title;
+                            else
+                                Dane.Tytul = Title.Substring(0, 50);
 
-                        PolaczenieZBaza.ObejrzaneFilmies.InsertOnSubmit(Dane);
-                        PolaczenieZBaza.SubmitChanges();
+                            PolaczenieZBaza.ObejrzaneFilmies.InsertOnSubmit(Dane);
+                            PolaczenieZBaza.SubmitChanges();
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.ToString());
                     }
                 }
-                catch (Exception exc)
+            }
+            else
+            {
+                if (this.Player.currentMedia != null)
                 {
-                    MessageBox.Show(exc.ToString());
+                    using (DataClasses2DataContext PolaczenieZBazaYT = new DataClasses2DataContext())
+                    {
+                        var Dane = new YT
+                        {
+                            Id = ID_YT++,
+                            MomentZatrzymania = this.Player.Ctlcontrols.currentPosition,
+                            URL = szukanie1.Url,
+                        };
+                        if (szukanie1.TitleYT.Length < 50)
+                            Dane.Title = szukanie1.TitleYT;
+                        else
+                            Dane.Title = szukanie1.TitleYT.Substring(0, 50);
+
+                        try
+                        {
+                            PolaczenieZBazaYT.YTs.InsertOnSubmit(Dane);
+                            PolaczenieZBazaYT.SubmitChanges();
+                        }
+                        catch(Exception exc)
+                        {
+                            MessageBox.Show(exc.ToString());
+                        }
+                    }
                 }
             }
         }
@@ -151,29 +185,79 @@ namespace Projekt_InzOpr
 
         private void UpdateCzasZatrzymania()
         {
-            DataClasses1DataContext Polaczenie = new DataClasses1DataContext();
-            var query =
-                    from Film in Polaczenie.ObejrzaneFilmies
-                    where Film.Id == ID_Filmu - 1
-                    select Film; //znajduje ostatni dodany do historii film
-
-            ObejrzaneFilmy nowy = new ObejrzaneFilmy();
-            foreach (ObejrzaneFilmy FM in query)
+            if (this.Player.currentMedia != null && !czyYT)
             {
-                FM.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
-                try
+                DataClasses1DataContext Polaczenie = new DataClasses1DataContext();
+                var query =
+                        from Film in Polaczenie.ObejrzaneFilmies
+                        where Film.Id == ID_Filmu - 1
+                        select Film; //znajduje ostatni dodany do historii film
+
+                ObejrzaneFilmy nowy = new ObejrzaneFilmy();
+                foreach (ObejrzaneFilmy FM in query)
                 {
-                    Polaczenie.SubmitChanges();
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.ToString());
+                    FM.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
+                    try
+                    {
+                        Polaczenie.SubmitChanges();
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.ToString());
+                    }
                 }
             }
+            else if(this.Player.currentMedia!=null && czyYT == true)
+            {
+                DataClasses2DataContext Conn = new DataClasses2DataContext();
+                var query =
+                    from YT in Conn.YTs
+                    where YT.Id == ID_YT - 1
+                    select YT;
+
+                YT nowy = new YT();
+                foreach(YT x in query)
+                {
+                    x.MomentZatrzymania = this.Player.Ctlcontrols.currentPosition;
+                    try
+                    {
+                        Conn.SubmitChanges();
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.ToString());
+                    }
+                }
+            }
+            
         }
 
         private void ButtonPoprzedni_Click(object sender, EventArgs e)
         {
+            if (czyYT)
+            {
+                if (dataGridView2.RowCount < 2) //nie ma "poprzedniego"
+                    return;
+
+                timer1.Stop();
+                Player.URL = dataGridView2[1, dataGridView2.RowCount - 2].Value.ToString();
+                this.Text = dataGridView2[3, dataGridView2.RowCount - 2].Value.ToString();
+
+                if (dataGridView2[2, dataGridView2.RowCount - 2].Value == null)
+                {
+                    this.Player.Ctlcontrols.currentPosition = 0;
+                }
+                else
+                {
+                    this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView2[2, dataGridView2.RowCount - 2].Value);
+                }
+
+                timer1.Start();
+                Czas();
+                //MessageBox.Show("Przykro mi, jeszcze tego nie zrobiono :c");
+                return;
+            }
+
             if (dataGridView1.RowCount < 2) //puste badz 1 film
             {
                 return;
@@ -197,5 +281,54 @@ namespace Projekt_InzOpr
 
             PrzesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 2].Value));
         }
+
+        private void buttonYTWczytaj_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ButtonPlay_Click(null, null);
+                if (!czyYT)
+                {
+                    UpdateCzasZatrzymania(); //aktualizujemy czas aktalnie odtwarzanego filmu ktory nie jest z yt
+                }
+
+                if (dataGridView2.SelectedRows.Count > 1 || dataGridView2.SelectedRows == null)
+                {
+                    MessageBox.Show("Nic nie wybrales");
+                    return;
+                }
+
+                try
+                {
+                    timer1.Stop();
+                    Player.URL = dataGridView2[1, dataGridView2.CurrentRow.Index].Value.ToString();
+                    if (dataGridView2[2, dataGridView2.CurrentRow.Index].Value == null)
+                    {
+                        this.Player.Ctlcontrols.currentPosition = 0;
+                    }
+                    else
+                    {
+                        this.Player.Ctlcontrols.currentPosition = Convert.ToDouble(dataGridView2[2, dataGridView2.CurrentRow.Index].Value);
+                    }
+                    timer1.Start();
+
+                    Czas();
+
+                    //PrzesunElementHistorii(Convert.ToInt32(dataGridView1[0, dataGridView1.CurrentRow.Index].Value));
+
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                }
+
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+        }
+
     }
 }
