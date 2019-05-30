@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:minWidth="25px"
+	android:minHeight="25px">
+	<TextView
+		android:text="Przykładowy tekst"
+		android:textSize="50sp"
+		android:gravity="center"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:layout_marginTop="20dp"
+		android:id="@+id/txtNumber" />
+	<Button
+		android:text="Szukaj"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="150"
+		android:layout_below="@id/textView1"
+		android:id="@+id/button1" />
+	<Button
+		android:text="Nie klikac plis"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5"
+		android:id="@+id/button2"
+		android:layout_below="@id/button1" />
+	<ListView
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="wrap_content"
+		android:layout_height="192.5dp"
+		android:layout_below="@id/button2"
+		android:id="@+id/listView1" />
+</RelativeLayout>

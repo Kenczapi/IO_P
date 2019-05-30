@@ -170,7 +170,7 @@ namespace Projekt_InzOpr
         }
 
 
-        private void Player_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        private void Player_PlayStateChange1(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
             if (e.newState == 3 && CzyByloZmieniane == true)//odtwarza i media byly zmienione
             {

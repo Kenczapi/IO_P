@@ -315,5 +315,24 @@ namespace Projekt_InzOpr
             }
         }
 
+        private void Player_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MyBTMacAdress = GetLocalMacAdress();
+
+            //MessageBox.Show(MyBTMacAdress.ToString()); testing purposes only!!
+
+            searchForDevices();
+            pairing();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            showPairedDevices();
+        }
     }
 }

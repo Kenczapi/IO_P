@@ -34,9 +34,8 @@ namespace Projekt_InzOpr
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Okno));
-            this.Player = new AxWMPLib.AxWindowsMediaPlayer();
             this.panelSterowanie = new System.Windows.Forms.Panel();
-            this.trackBarDzwiek = new Projekt_InzOpr.ColorSlider();
+            this.button1 = new System.Windows.Forms.Button();
             this.buttonYT = new System.Windows.Forms.Button();
             this.buttonPoprzedni = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,7 +45,6 @@ namespace Projekt_InzOpr
             this.ButtonZamknij = new System.Windows.Forms.Button();
             this.buttonOtworz = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
-            this.trackBarCzas = new Projekt_InzOpr.ColorSlider();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panelHistoria = new System.Windows.Forms.Panel();
@@ -64,18 +62,21 @@ namespace Projekt_InzOpr
             this.czasZatrzymaniaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sciezkaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.obejrzaneFilmyTableAdapter = new Projekt_InzOpr.HistoriaOgladaniaDataSetTableAdapters.ObejrzaneFilmyTableAdapter();
-            this.szukanie1 = new Projekt_InzOpr.Szukanie();
             this.panelYT = new System.Windows.Forms.Panel();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.buttonYTWczytaj = new System.Windows.Forms.Button();
-            this.historiaYoutubeDataSet = new Projekt_InzOpr.HistoriaYoutubeDataSet();
-            this.yTBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.yTTableAdapter = new Projekt_InzOpr.HistoriaYoutubeDataSetTableAdapters.YTTableAdapter();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.idDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.uRLDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.momentZatrzymaniaDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.titleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
+            this.yTBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.historiaYoutubeDataSet = new Projekt_InzOpr.HistoriaYoutubeDataSet();
+            this.yTTableAdapter = new Projekt_InzOpr.HistoriaYoutubeDataSetTableAdapters.YTTableAdapter();
+            this.Player = new AxWMPLib.AxWindowsMediaPlayer();
+            this.szukanie1 = new Projekt_InzOpr.Szukanie();
+            this.trackBarDzwiek = new Projekt_InzOpr.ColorSlider();
+            this.trackBarCzas = new Projekt_InzOpr.ColorSlider();
+            this.button2 = new System.Windows.Forms.Button();
             this.panelSterowanie.SuspendLayout();
             this.panelHistoria.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -83,22 +84,10 @@ namespace Projekt_InzOpr
             ((System.ComponentModel.ISupportInitialize)(this.historiaOgladaniaDataSet)).BeginInit();
             this.panelYT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.historiaYoutubeDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historiaYoutubeDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.SuspendLayout();
-            // 
-            // Player
-            // 
-            this.Player.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Player.Enabled = true;
-            this.Player.Location = new System.Drawing.Point(0, 0);
-            this.Player.Name = "Player";
-            this.Player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("Player.OcxState")));
-            this.Player.Size = new System.Drawing.Size(1256, 917);
-            this.Player.TabIndex = 0;
-            this.Player.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.Player_PlayStateChange);
-            this.Player.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(this.Player_ClickEvent);
-            this.Player.MouseMoveEvent += new AxWMPLib._WMPOCXEvents_MouseMoveEventHandler(this.Player_MouseMoveEvent);
             // 
             // panelSterowanie
             // 
@@ -106,6 +95,8 @@ namespace Projekt_InzOpr
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSterowanie.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panelSterowanie.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panelSterowanie.BackgroundImage")));
+            this.panelSterowanie.Controls.Add(this.button2);
+            this.panelSterowanie.Controls.Add(this.button1);
             this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
             this.panelSterowanie.Controls.Add(this.buttonYT);
             this.panelSterowanie.Controls.Add(this.buttonPoprzedni);
@@ -125,38 +116,15 @@ namespace Projekt_InzOpr
             this.panelSterowanie.TabIndex = 1;
             this.panelSterowanie.Visible = false;
             // 
-            // trackBarDzwiek
+            // button1
             // 
-            this.trackBarDzwiek.BackColor = System.Drawing.Color.Transparent;
-            this.trackBarDzwiek.BarPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(94)))), ((int)(((byte)(110)))));
-            this.trackBarDzwiek.BarPenColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(60)))), ((int)(((byte)(74)))));
-            this.trackBarDzwiek.BorderRoundRectSize = new System.Drawing.Size(8, 8);
-            this.trackBarDzwiek.ColorSchema = Projekt_InzOpr.ColorSlider.ColorSchemas.RedColors;
-            this.trackBarDzwiek.ElapsedInnerColor = System.Drawing.Color.Red;
-            this.trackBarDzwiek.ElapsedPenColorBottom = System.Drawing.Color.Salmon;
-            this.trackBarDzwiek.ElapsedPenColorTop = System.Drawing.Color.LightCoral;
-            this.trackBarDzwiek.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
-            this.trackBarDzwiek.ForeColor = System.Drawing.Color.White;
-            this.trackBarDzwiek.LargeChange = ((uint)(5u));
-            this.trackBarDzwiek.Location = new System.Drawing.Point(902, 20);
-            this.trackBarDzwiek.Name = "trackBarDzwiek";
-            this.trackBarDzwiek.ScaleDivisions = 10;
-            this.trackBarDzwiek.ScaleSubDivisions = 5;
-            this.trackBarDzwiek.ShowDivisionsText = true;
-            this.trackBarDzwiek.ShowSmallScale = false;
-            this.trackBarDzwiek.Size = new System.Drawing.Size(109, 23);
-            this.trackBarDzwiek.SmallChange = ((uint)(1u));
-            this.trackBarDzwiek.TabIndex = 13;
-            this.trackBarDzwiek.Text = "colorSlider1";
-            this.trackBarDzwiek.ThumbInnerColor = System.Drawing.Color.Red;
-            this.trackBarDzwiek.ThumbPenColor = System.Drawing.Color.Red;
-            this.trackBarDzwiek.ThumbRoundRectSize = new System.Drawing.Size(16, 16);
-            this.trackBarDzwiek.ThumbSize = new System.Drawing.Size(16, 16);
-            this.trackBarDzwiek.TickAdd = 0F;
-            this.trackBarDzwiek.TickColor = System.Drawing.Color.White;
-            this.trackBarDzwiek.TickDivide = 0F;
-            this.trackBarDzwiek.Value = 30D;
-            this.trackBarDzwiek.MouseCaptureChanged += new System.EventHandler(this.TrackBarDzwiek_MouseCaptureChanged);
+            this.button1.Location = new System.Drawing.Point(262, 20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // buttonYT
             // 
@@ -244,38 +212,6 @@ namespace Projekt_InzOpr
             this.buttonPlay.Text = "Pause";
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.ButtonPlay_Click);
-            // 
-            // trackBarCzas
-            // 
-            this.trackBarCzas.BackColor = System.Drawing.Color.Transparent;
-            this.trackBarCzas.BarPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(94)))), ((int)(((byte)(110)))));
-            this.trackBarCzas.BarPenColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(60)))), ((int)(((byte)(74)))));
-            this.trackBarCzas.BorderRoundRectSize = new System.Drawing.Size(8, 8);
-            this.trackBarCzas.ElapsedInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(56)))), ((int)(((byte)(152)))));
-            this.trackBarCzas.ElapsedPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(130)))), ((int)(((byte)(208)))));
-            this.trackBarCzas.ElapsedPenColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(140)))), ((int)(((byte)(180)))));
-            this.trackBarCzas.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
-            this.trackBarCzas.ForeColor = System.Drawing.Color.White;
-            this.trackBarCzas.LargeChange = ((uint)(5u));
-            this.trackBarCzas.Location = new System.Drawing.Point(12, 0);
-            this.trackBarCzas.Name = "trackBarCzas";
-            this.trackBarCzas.ScaleDivisions = 10;
-            this.trackBarCzas.ScaleSubDivisions = 5;
-            this.trackBarCzas.ShowDivisionsText = true;
-            this.trackBarCzas.ShowSmallScale = false;
-            this.trackBarCzas.Size = new System.Drawing.Size(1232, 23);
-            this.trackBarCzas.SmallChange = ((uint)(1u));
-            this.trackBarCzas.TabIndex = 14;
-            this.trackBarCzas.Text = "colorSlider1";
-            this.trackBarCzas.ThumbInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(56)))), ((int)(((byte)(152)))));
-            this.trackBarCzas.ThumbPenColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(56)))), ((int)(((byte)(152)))));
-            this.trackBarCzas.ThumbRoundRectSize = new System.Drawing.Size(16, 16);
-            this.trackBarCzas.ThumbSize = new System.Drawing.Size(16, 16);
-            this.trackBarCzas.TickAdd = 0F;
-            this.trackBarCzas.TickColor = System.Drawing.Color.White;
-            this.trackBarCzas.TickDivide = 0F;
-            this.trackBarCzas.Value = 30D;
-            this.trackBarCzas.MouseCaptureChanged += new System.EventHandler(this.TrackBarCzas_MouseCaptureChanged);
             // 
             // openFileDialog1
             // 
@@ -391,14 +327,6 @@ namespace Projekt_InzOpr
             // 
             this.obejrzaneFilmyTableAdapter.ClearBeforeFill = true;
             // 
-            // szukanie1
-            // 
-            this.szukanie1.Location = new System.Drawing.Point(262, 82);
-            this.szukanie1.Name = "szukanie1";
-            this.szukanie1.Size = new System.Drawing.Size(587, 420);
-            this.szukanie1.TabIndex = 3;
-            this.szukanie1.Visible = false;
-            // 
             // panelYT
             // 
             this.panelYT.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -409,6 +337,16 @@ namespace Projekt_InzOpr
             this.panelYT.Name = "panelYT";
             this.panelYT.Size = new System.Drawing.Size(239, 871);
             this.panelYT.TabIndex = 4;
+            // 
+            // buttonYTWczytaj
+            // 
+            this.buttonYTWczytaj.Location = new System.Drawing.Point(57, 573);
+            this.buttonYTWczytaj.Name = "buttonYTWczytaj";
+            this.buttonYTWczytaj.Size = new System.Drawing.Size(75, 23);
+            this.buttonYTWczytaj.TabIndex = 1;
+            this.buttonYTWczytaj.Text = "Wczytaj";
+            this.buttonYTWczytaj.UseVisualStyleBackColor = true;
+            this.buttonYTWczytaj.Click += new System.EventHandler(this.buttonYTWczytaj_Click);
             // 
             // dataGridView2
             // 
@@ -425,30 +363,6 @@ namespace Projekt_InzOpr
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.Size = new System.Drawing.Size(239, 421);
             this.dataGridView2.TabIndex = 0;
-            // 
-            // buttonYTWczytaj
-            // 
-            this.buttonYTWczytaj.Location = new System.Drawing.Point(57, 573);
-            this.buttonYTWczytaj.Name = "buttonYTWczytaj";
-            this.buttonYTWczytaj.Size = new System.Drawing.Size(75, 23);
-            this.buttonYTWczytaj.TabIndex = 1;
-            this.buttonYTWczytaj.Text = "Wczytaj";
-            this.buttonYTWczytaj.UseVisualStyleBackColor = true;
-            this.buttonYTWczytaj.Click += new System.EventHandler(this.buttonYTWczytaj_Click);
-            // 
-            // historiaYoutubeDataSet
-            // 
-            this.historiaYoutubeDataSet.DataSetName = "HistoriaYoutubeDataSet";
-            this.historiaYoutubeDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // yTBindingSource
-            // 
-            this.yTBindingSource.DataMember = "YT";
-            this.yTBindingSource.DataSource = this.historiaYoutubeDataSet;
-            // 
-            // yTTableAdapter
-            // 
-            this.yTTableAdapter.ClearBeforeFill = true;
             // 
             // idDataGridViewTextBoxColumn2
             // 
@@ -476,6 +390,116 @@ namespace Projekt_InzOpr
             this.titleDataGridViewTextBoxColumn.HeaderText = "Title";
             this.titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
             // 
+            // yTBindingSource
+            // 
+            this.yTBindingSource.DataMember = "YT";
+            this.yTBindingSource.DataSource = this.historiaYoutubeDataSet;
+            // 
+            // historiaYoutubeDataSet
+            // 
+            this.historiaYoutubeDataSet.DataSetName = "HistoriaYoutubeDataSet";
+            this.historiaYoutubeDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // yTTableAdapter
+            // 
+            this.yTTableAdapter.ClearBeforeFill = true;
+            // 
+            // Player
+            // 
+            this.Player.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Player.Enabled = true;
+            this.Player.Location = new System.Drawing.Point(0, 0);
+            this.Player.Name = "Player";
+            this.Player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("Player.OcxState")));
+            this.Player.Size = new System.Drawing.Size(1256, 917);
+            this.Player.TabIndex = 0;
+            this.Player.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.Player_PlayStateChange1);
+            this.Player.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(this.Player_ClickEvent);
+            this.Player.MouseMoveEvent += new AxWMPLib._WMPOCXEvents_MouseMoveEventHandler(this.Player_MouseMoveEvent);
+            // 
+            // szukanie1
+            // 
+            this.szukanie1.Location = new System.Drawing.Point(262, 82);
+            this.szukanie1.Name = "szukanie1";
+            this.szukanie1.Size = new System.Drawing.Size(587, 420);
+            this.szukanie1.TabIndex = 3;
+            this.szukanie1.Visible = false;
+            // 
+            // trackBarDzwiek
+            // 
+            this.trackBarDzwiek.BackColor = System.Drawing.Color.Transparent;
+            this.trackBarDzwiek.BarPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(94)))), ((int)(((byte)(110)))));
+            this.trackBarDzwiek.BarPenColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(60)))), ((int)(((byte)(74)))));
+            this.trackBarDzwiek.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackBarDzwiek.ColorSchema = Projekt_InzOpr.ColorSlider.ColorSchemas.RedColors;
+            this.trackBarDzwiek.ElapsedInnerColor = System.Drawing.Color.Red;
+            this.trackBarDzwiek.ElapsedPenColorBottom = System.Drawing.Color.Salmon;
+            this.trackBarDzwiek.ElapsedPenColorTop = System.Drawing.Color.LightCoral;
+            this.trackBarDzwiek.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
+            this.trackBarDzwiek.ForeColor = System.Drawing.Color.White;
+            this.trackBarDzwiek.LargeChange = ((uint)(5u));
+            this.trackBarDzwiek.Location = new System.Drawing.Point(902, 20);
+            this.trackBarDzwiek.Name = "trackBarDzwiek";
+            this.trackBarDzwiek.ScaleDivisions = 10;
+            this.trackBarDzwiek.ScaleSubDivisions = 5;
+            this.trackBarDzwiek.ShowDivisionsText = true;
+            this.trackBarDzwiek.ShowSmallScale = false;
+            this.trackBarDzwiek.Size = new System.Drawing.Size(109, 23);
+            this.trackBarDzwiek.SmallChange = ((uint)(1u));
+            this.trackBarDzwiek.TabIndex = 13;
+            this.trackBarDzwiek.Text = "colorSlider1";
+            this.trackBarDzwiek.ThumbInnerColor = System.Drawing.Color.Red;
+            this.trackBarDzwiek.ThumbPenColor = System.Drawing.Color.Red;
+            this.trackBarDzwiek.ThumbRoundRectSize = new System.Drawing.Size(16, 16);
+            this.trackBarDzwiek.ThumbSize = new System.Drawing.Size(16, 16);
+            this.trackBarDzwiek.TickAdd = 0F;
+            this.trackBarDzwiek.TickColor = System.Drawing.Color.White;
+            this.trackBarDzwiek.TickDivide = 0F;
+            this.trackBarDzwiek.Value = 30D;
+            this.trackBarDzwiek.MouseCaptureChanged += new System.EventHandler(this.TrackBarDzwiek_MouseCaptureChanged);
+            // 
+            // trackBarCzas
+            // 
+            this.trackBarCzas.BackColor = System.Drawing.Color.Transparent;
+            this.trackBarCzas.BarPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(94)))), ((int)(((byte)(110)))));
+            this.trackBarCzas.BarPenColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(60)))), ((int)(((byte)(74)))));
+            this.trackBarCzas.BorderRoundRectSize = new System.Drawing.Size(8, 8);
+            this.trackBarCzas.ElapsedInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(56)))), ((int)(((byte)(152)))));
+            this.trackBarCzas.ElapsedPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(130)))), ((int)(((byte)(208)))));
+            this.trackBarCzas.ElapsedPenColorTop = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(140)))), ((int)(((byte)(180)))));
+            this.trackBarCzas.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
+            this.trackBarCzas.ForeColor = System.Drawing.Color.White;
+            this.trackBarCzas.LargeChange = ((uint)(5u));
+            this.trackBarCzas.Location = new System.Drawing.Point(12, 0);
+            this.trackBarCzas.Name = "trackBarCzas";
+            this.trackBarCzas.ScaleDivisions = 10;
+            this.trackBarCzas.ScaleSubDivisions = 5;
+            this.trackBarCzas.ShowDivisionsText = true;
+            this.trackBarCzas.ShowSmallScale = false;
+            this.trackBarCzas.Size = new System.Drawing.Size(1232, 23);
+            this.trackBarCzas.SmallChange = ((uint)(1u));
+            this.trackBarCzas.TabIndex = 14;
+            this.trackBarCzas.Text = "colorSlider1";
+            this.trackBarCzas.ThumbInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(56)))), ((int)(((byte)(152)))));
+            this.trackBarCzas.ThumbPenColor = System.Drawing.Color.FromArgb(((int)(((byte)(21)))), ((int)(((byte)(56)))), ((int)(((byte)(152)))));
+            this.trackBarCzas.ThumbRoundRectSize = new System.Drawing.Size(16, 16);
+            this.trackBarCzas.ThumbSize = new System.Drawing.Size(16, 16);
+            this.trackBarCzas.TickAdd = 0F;
+            this.trackBarCzas.TickColor = System.Drawing.Color.White;
+            this.trackBarCzas.TickDivide = 0F;
+            this.trackBarCzas.Value = 30D;
+            this.trackBarCzas.MouseCaptureChanged += new System.EventHandler(this.TrackBarCzas_MouseCaptureChanged);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(363, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Okno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -496,7 +520,6 @@ namespace Projekt_InzOpr
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Okno_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Okno_KeyPress);
-            ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
             this.panelSterowanie.ResumeLayout(false);
             this.panelSterowanie.PerformLayout();
             this.panelHistoria.ResumeLayout(false);
@@ -505,8 +528,9 @@ namespace Projekt_InzOpr
             ((System.ComponentModel.ISupportInitialize)(this.historiaOgladaniaDataSet)).EndInit();
             this.panelYT.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.historiaYoutubeDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historiaYoutubeDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -554,6 +578,8 @@ namespace Projekt_InzOpr
         private DataGridViewTextBoxColumn uRLDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn momentZatrzymaniaDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
+        private Button button1;
+        private Button button2;
     }
 }
 
