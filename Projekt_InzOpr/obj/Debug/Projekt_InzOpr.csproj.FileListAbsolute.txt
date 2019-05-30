@@ -318,7 +318,6 @@ D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\libvideo.d
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\YoutubeSearch.dll
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\Interop.WMPLib.dll
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\AxInterop.WMPLib.dll
-D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csprojAssemblyReference.cache
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.exe.config
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Interop.WMPLib.dll
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\AxInterop.WMPLib.dll
@@ -333,3 +332,10 @@ D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_In
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.pdb
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\HistoriaYoutube.mdf
 D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\HistoriaYoutube_log.ldf
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\InTheHand.Devices.Bluetooth.dll
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\InTheHand.dll
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\InTheHand.pdb
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\InTheHand.xml
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\InTheHand.Devices.Bluetooth.pdb
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\bin\Debug\InTheHand.Devices.Bluetooth.xml
+D:\Projekty\Projekt_InzynieriaOprogramowania\Projekt_InzOpr\obj\Debug\Projekt_InzOpr.csprojAssemblyReference.cache
