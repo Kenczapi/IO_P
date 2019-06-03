@@ -65,12 +65,27 @@ namespace Projekt_InzOpr
             this.sciezkaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.obejrzaneFilmyTableAdapter = new Projekt_InzOpr.HistoriaOgladaniaDataSetTableAdapters.ObejrzaneFilmyTableAdapter();
             this.szukanie1 = new Projekt_InzOpr.Szukanie();
+            this.panelYT = new System.Windows.Forms.Panel();
+            this.buttonYTWczytaj = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.idDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uRLDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.momentZatrzymaniaDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.yTBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.historiaYoutubeDataSet = new Projekt_InzOpr.HistoriaYoutubeDataSet();
+            this.yTTableAdapter = new Projekt_InzOpr.HistoriaYoutubeDataSetTableAdapters.YTTableAdapter();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.panelSterowanie.SuspendLayout();
             this.panelHistoria.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.obejrzaneFilmyBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.historiaOgladaniaDataSet)).BeginInit();
+            this.panelYT.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yTBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historiaYoutubeDataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // Player
@@ -92,6 +107,7 @@ namespace Projekt_InzOpr
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSterowanie.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panelSterowanie.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panelSterowanie.BackgroundImage")));
+            this.panelSterowanie.Controls.Add(this.button1);
             this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
             this.panelSterowanie.Controls.Add(this.buttonYT);
             this.panelSterowanie.Controls.Add(this.buttonPoprzedni);
@@ -385,6 +401,93 @@ namespace Projekt_InzOpr
             this.szukanie1.TabIndex = 3;
             this.szukanie1.Visible = false;
             // 
+            // panelYT
+            // 
+            this.panelYT.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelYT.Controls.Add(this.buttonYTWczytaj);
+            this.panelYT.Controls.Add(this.dataGridView2);
+            this.panelYT.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelYT.Location = new System.Drawing.Point(0, 0);
+            this.panelYT.Name = "panelYT";
+            this.panelYT.Size = new System.Drawing.Size(239, 871);
+            this.panelYT.TabIndex = 4;
+            // 
+            // buttonYTWczytaj
+            // 
+            this.buttonYTWczytaj.Location = new System.Drawing.Point(57, 573);
+            this.buttonYTWczytaj.Name = "buttonYTWczytaj";
+            this.buttonYTWczytaj.Size = new System.Drawing.Size(75, 23);
+            this.buttonYTWczytaj.TabIndex = 1;
+            this.buttonYTWczytaj.Text = "Wczytaj";
+            this.buttonYTWczytaj.UseVisualStyleBackColor = true;
+            this.buttonYTWczytaj.Click += new System.EventHandler(this.buttonYTWczytaj_Click);
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AutoGenerateColumns = false;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idDataGridViewTextBoxColumn2,
+            this.uRLDataGridViewTextBoxColumn,
+            this.momentZatrzymaniaDataGridViewTextBoxColumn1,
+            this.titleDataGridViewTextBoxColumn});
+            this.dataGridView2.DataSource = this.yTBindingSource;
+            this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataGridView2.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(239, 421);
+            this.dataGridView2.TabIndex = 0;
+            // 
+            // idDataGridViewTextBoxColumn2
+            // 
+            this.idDataGridViewTextBoxColumn2.DataPropertyName = "Id";
+            this.idDataGridViewTextBoxColumn2.HeaderText = "Id";
+            this.idDataGridViewTextBoxColumn2.Name = "idDataGridViewTextBoxColumn2";
+            this.idDataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // uRLDataGridViewTextBoxColumn
+            // 
+            this.uRLDataGridViewTextBoxColumn.DataPropertyName = "URL";
+            this.uRLDataGridViewTextBoxColumn.HeaderText = "URL";
+            this.uRLDataGridViewTextBoxColumn.Name = "uRLDataGridViewTextBoxColumn";
+            this.uRLDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // momentZatrzymaniaDataGridViewTextBoxColumn1
+            // 
+            this.momentZatrzymaniaDataGridViewTextBoxColumn1.DataPropertyName = "MomentZatrzymania";
+            this.momentZatrzymaniaDataGridViewTextBoxColumn1.HeaderText = "MomentZatrzymania";
+            this.momentZatrzymaniaDataGridViewTextBoxColumn1.Name = "momentZatrzymaniaDataGridViewTextBoxColumn1";
+            // 
+            // titleDataGridViewTextBoxColumn
+            // 
+            this.titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
+            this.titleDataGridViewTextBoxColumn.HeaderText = "Title";
+            this.titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
+            // 
+            // yTBindingSource
+            // 
+            this.yTBindingSource.DataMember = "YT";
+            this.yTBindingSource.DataSource = this.historiaYoutubeDataSet;
+            // 
+            // historiaYoutubeDataSet
+            // 
+            this.historiaYoutubeDataSet.DataSetName = "HistoriaYoutubeDataSet";
+            this.historiaYoutubeDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // yTTableAdapter
+            // 
+            this.yTTableAdapter.ClearBeforeFill = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(214, 20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Bluetooth";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Okno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -392,6 +495,7 @@ namespace Projekt_InzOpr
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1256, 917);
+            this.Controls.Add(this.panelYT);
             this.Controls.Add(this.szukanie1);
             this.Controls.Add(this.panelHistoria);
             this.Controls.Add(this.panelSterowanie);
@@ -411,6 +515,10 @@ namespace Projekt_InzOpr
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.obejrzaneFilmyBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.historiaOgladaniaDataSet)).EndInit();
+            this.panelYT.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.yTBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historiaYoutubeDataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -448,6 +556,17 @@ namespace Projekt_InzOpr
         private Szukanie szukanie1;
         private Button buttonYT;
         private System.Windows.Forms.Panel panelSterowanie;
+        private Panel panelYT;
+        private Button buttonYTWczytaj;
+        private DataGridView dataGridView2;
+        private HistoriaYoutubeDataSet historiaYoutubeDataSet;
+        private BindingSource yTBindingSource;
+        private HistoriaYoutubeDataSetTableAdapters.YTTableAdapter yTTableAdapter;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn uRLDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn momentZatrzymaniaDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
+        private Button button1;
     }
 }
 

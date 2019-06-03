@@ -48,6 +48,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DarrenLee">
+      <HintPath>..\DLL\DarrenLee.dll</HintPath>
+    </Reference>
+    <Reference Include="InTheHand, Version=10.2018.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\InTheHand.Pontoon.10.2018.3.19\lib\net452\InTheHand.dll</HintPath>
+    </Reference>
+    <Reference Include="InTheHand.Net.Personal">
+      <HintPath>..\DLL\InTheHand.Net.Personal.dll</HintPath>
+    </Reference>
     <Reference Include="libvideo">
       <HintPath>..\DoSzukania\libvideo.dll</HintPath>
     </Reference>
@@ -73,6 +82,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
+    <Compile Include="DataClasses2.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataClasses2.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +101,17 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HistoriaOgladaniaDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="HistoriaYoutubeDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HistoriaYoutubeDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="OknoBT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OknoBT.Designer.cs">
+      <DependentUpon>OknoBT.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +131,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OknoBT.resx">
+      <DependentUpon>OknoBT.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -118,6 +146,7 @@
     </Compile>
     <EmbeddedResource Include="Szukanie.resx">
       <DependentUpon>Szukanie.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="DataClasses1.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
@@ -126,6 +155,14 @@
     </None>
     <None Include="DataClasses1.dbml.layout">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </None>
+    <None Include="DataClasses2.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>DataClasses2.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataClasses2.dbml.layout">
+      <DependentUpon>DataClasses2.dbml</DependentUpon>
     </None>
     <None Include="HistoriaOgladaniaDataSet.xsc">
       <DependentUpon>HistoriaOgladaniaDataSet.xsd</DependentUpon>
@@ -137,6 +174,17 @@
     </None>
     <None Include="HistoriaOgladaniaDataSet.xss">
       <DependentUpon>HistoriaOgladaniaDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="HistoriaYoutubeDataSet.xsc">
+      <DependentUpon>HistoriaYoutubeDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="HistoriaYoutubeDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>HistoriaYoutubeDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="HistoriaYoutubeDataSet.xss">
+      <DependentUpon>HistoriaYoutubeDataSet.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Video.datasource" />
@@ -195,6 +243,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>HistoriaOgladania.mdf</DependentUpon>
     </Content>
+    <Content Include="HistoriaYoutube.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HistoriaYoutube_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>HistoriaYoutube.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
