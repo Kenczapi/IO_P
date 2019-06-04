@@ -28,77 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.buttonX = new System.Windows.Forms.Button();
-            this.buttonSzukaj = new System.Windows.Forms.Button();
-            this.buttonPolacz = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.buttonWlacz = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // richTextBox1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(335, 328);
-            this.dataGridView1.TabIndex = 0;
+            this.richTextBox1.Location = new System.Drawing.Point(12, 13);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(399, 297);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = "";
             // 
-            // buttonX
+            // buttonWlacz
             // 
-            this.buttonX.Location = new System.Drawing.Point(295, 334);
-            this.buttonX.Name = "buttonX";
-            this.buttonX.Size = new System.Drawing.Size(28, 23);
-            this.buttonX.TabIndex = 2;
-            this.buttonX.Text = "X";
-            this.buttonX.UseVisualStyleBackColor = true;
-            this.buttonX.Click += new System.EventHandler(this.buttonX_Click);
-            // 
-            // buttonSzukaj
-            // 
-            this.buttonSzukaj.Location = new System.Drawing.Point(12, 334);
-            this.buttonSzukaj.Name = "buttonSzukaj";
-            this.buttonSzukaj.Size = new System.Drawing.Size(101, 23);
-            this.buttonSzukaj.TabIndex = 1;
-            this.buttonSzukaj.Text = "Szukaj urzadzen";
-            this.buttonSzukaj.UseVisualStyleBackColor = true;
-            this.buttonSzukaj.Click += new System.EventHandler(this.buttonSzukaj_Click);
-            // 
-            // buttonPolacz
-            // 
-            this.buttonPolacz.Location = new System.Drawing.Point(161, 334);
-            this.buttonPolacz.Name = "buttonPolacz";
-            this.buttonPolacz.Size = new System.Drawing.Size(75, 23);
-            this.buttonPolacz.TabIndex = 3;
-            this.buttonPolacz.Text = "Polacz";
-            this.buttonPolacz.UseVisualStyleBackColor = true;
-            this.buttonPolacz.Click += new System.EventHandler(this.buttonPolacz_Click);
+            this.buttonWlacz.Location = new System.Drawing.Point(12, 316);
+            this.buttonWlacz.Name = "buttonWlacz";
+            this.buttonWlacz.Size = new System.Drawing.Size(75, 23);
+            this.buttonWlacz.TabIndex = 2;
+            this.buttonWlacz.Text = "Wlacz";
+            this.buttonWlacz.UseVisualStyleBackColor = true;
+            this.buttonWlacz.Click += new System.EventHandler(this.buttonWlacz_Click);
             // 
             // OknoBT
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 369);
-            this.Controls.Add(this.buttonPolacz);
-            this.Controls.Add(this.buttonX);
-            this.Controls.Add(this.buttonSzukaj);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(423, 351);
+            this.Controls.Add(this.buttonWlacz);
+            this.Controls.Add(this.richTextBox1);
             this.Name = "OknoBT";
             this.Text = "OknoBT";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OknoBT_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button buttonX;
-        private System.Windows.Forms.Button buttonSzukaj;
-        private System.Windows.Forms.Button buttonPolacz;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button buttonWlacz;
     }
 }

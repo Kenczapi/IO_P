@@ -10,163 +10,110 @@ using System.Windows.Forms;
 using InTheHand.Net.Sockets;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
+using System.Net.Sockets;
+using System.Threading;
+using System.IO;
 
 namespace Projekt_InzOpr
 {
+
+    // DO TESTOWANIA DZIALANIA SERVERA UZYWALEM ALPIKACJI BLUE SERIAL, pieknie wysyla i odbiera dane
+    // pozostalo tylko zrobic mobilna aplikacje, niestety xamarin odpada, bo chlopak ma problem z obsluga dll'a bluetoothowego
+
     public partial class OknoBT : Form
     {
-
-        private BluetoothAddress MyBtAdress;
-
-        List<BluetoothDeviceInfo> zapamietane;
-        List<BluetoothDeviceInfo> nieznane;
-        List<BluetoothDeviceInfo> wszystkie;
-        List<BluetoothDeviceInfo> sparowane;
-        BluetoothDeviceInfo[] paired;
-
-        BluetoothEndPoint endPoint;
-        BluetoothClient client;
-        BluetoothComponent component;
-
         
+        Guid myGuid;
+        bool serverStarted = false;
+
+        private void getGuid()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "myGuid.txt";
+            if (!File.Exists(path))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine("00001101-0000-1000-8000-00805F9B34FB");
+                }
+            }
+
+            // Open the file to read from.
+            using (StreamReader sr = File.OpenText(path))
+            {
+                int i = 0;
+                string s;
+                while ((s = sr.ReadLine()) != null)
+                {
+                    i++;
+                    myGuid = new Guid(s);
+                }
+
+                if (i != 1)
+                {
+                    using (StreamWriter sw = File.CreateText(path))
+                    {
+                        myGuid = new Guid("00001101-0000-1000-8000-00805F9B34FB");
+                        sw.WriteLine("00001101-0000-1000-8000-00805F9B34FB");
+                    }
+                }
+            }
+        }
 
         public OknoBT()
         {
             InitializeComponent();
-
-            zapamietane = new List<BluetoothDeviceInfo>();
-            nieznane = new List<BluetoothDeviceInfo>();
-            wszystkie = new List<BluetoothDeviceInfo>();
-
-            endPoint = new BluetoothEndPoint(MyBtAdress, BluetoothService.SerialPort);
-            client = new BluetoothClient(endPoint);
-            component = new BluetoothComponent(client);
+            getGuid();
         }
 
-        private BluetoothAddress getMyMacAdress()
+        private void connectAsServer()
         {
-            if(BluetoothRadio.PrimaryRadio == null)
+            Thread bluetoothServerThread = new Thread(new ThreadStart(ServerConnectThread));
+            bluetoothServerThread.Start();
+        }
+
+        private void updateUI(string message)
+        {
+            Func<int> del = delegate ()
             {
-                return null;
-            }
+                richTextBox1.AppendText(message + System.Environment.NewLine);
+                return 0;
+            };
 
-            return BluetoothRadio.PrimaryRadio.LocalAddress;
+            Invoke(del);
         }
 
-        private void buttonX_Click(object sender, EventArgs e)
+        private void ServerConnectThread()
         {
-            this.Hide();
-        }
+            serverStarted = true;
+            updateUI("server started");
+            BluetoothListener btListener = new BluetoothListener(myGuid);
+            btListener.Start();
+            BluetoothClient client = btListener.AcceptBluetoothClient();
+            updateUI("Client has connected");
+            Stream aStream = client.GetStream();
 
-        private void DiscoverDevicesProgress(object sender, DiscoverDevicesEventArgs e)
-        {
-            for(int i = 0; i < e.Devices.Length; i++)
+            while (client.Connected)
             {
-                if (e.Devices[i].Remembered)
+                try
                 {
-                    zapamietane.Add(e.Devices[i]);
+                    byte[] received = new byte[1024];
+                    aStream.Read(received, 0, received.Length);
+                    updateUI("Received: " + Encoding.ASCII.GetString(received));
+                    byte[] sent = Encoding.ASCII.GetBytes("Thank you! " + DateTime.Now.ToString("hh:mm.ss"));
+                    aStream.Write(sent, 0, sent.Length);
                 }
-                else
+                catch (IOException exc)
                 {
-                    nieznane.Add(e.Devices[i]);
+                    updateUI("Client disconnected.\n" + exc.ToString());
                 }
-                this.wszystkie.Add(e.Devices[i]);
-                MessageBox.Show(e.Devices[i].DeviceName.ToString());
             }
         }
 
-        private void DiscoverDevicesCoplete(object sender, DiscoverDevicesEventArgs e)
+        private void buttonWlacz_Click(object sender, EventArgs e)
         {
-            this.dataGridView1.DataSource = this.wszystkie;
-        }
-
-        private void detectBluetoothDevices(object sender, DiscoverDevicesEventArgs e)
-        {
-            if((MyBtAdress = getMyMacAdress()) == null)
-            {
-                MessageBox.Show("Czy masz wlaczony Bluetooth?");
-                return;
-            }
-
-            MessageBox.Show("Rozpoczynam skanowanie, zajmie to okolo 10 sekund, nie próbuj nic naciskac");
-            component.DiscoverDevicesAsync(255, true, true, true, true, null);
-            component.DiscoverDevicesProgress += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesProgress);
-            component.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesCoplete);
-        }
-
-        private void buttonSzukaj_Click(object sender, EventArgs e)
-        {
-            detectBluetoothDevices(null, null);
-            System.Threading.Thread.Sleep(10000);
-            MessageBox.Show("Zakonczono");
-            this.dataGridView1.Update();
-        }
-
-        private void Connect(IAsyncResult result)
-        {
-            if (result.IsCompleted)
-            {
-                MessageBox.Show("Polaczono");
-            }
-        }
-
-        private void buttonPolacz_Click(object sender, EventArgs e)
-        {
-            ///PROBLEM JEST GDY NA TELEFONIE USUNIEMY SPAROWANIE A NA KOMPUTERZE ZOSTAJE, NIE WIME JAK ROZWIAZAC
-
-
-            if(dataGridView1.SelectedRows.Count != 1 || dataGridView1.SelectedRows.Count == null)
-            {
-                MessageBox.Show("Nic nie wybrano");
-                return;
-            }
-
-            searchForPairedDevices();
-
-            foreach(BluetoothDeviceInfo device in wszystkie)
-            {//porownaj czy urzadzenie jest GENERALNIE znalezione
-
-                bool czyZnalezione = false;
-
-                if (device.DeviceName.Equals(dataGridView1[1, dataGridView1.CurrentRow.Index].Value) && device.DeviceAddress.Equals(dataGridView1[0, dataGridView1.CurrentRow.Index].Value)) //znajduje wybrane z listy urzadzenie w zeskanowanych urzazdeniach
-                {
-                    foreach (BluetoothDeviceInfo pairedDevice in paired)
-                    {
-                        if (device.DeviceName.Equals(pairedDevice.DeviceName) && device.DeviceAddress.Equals(pairedDevice.DeviceAddress))
-                        {//urzadzenie z ktorym chcemy sie polaczcy jest juz sparowane
-                            czyZnalezione = true;
-
-                            //polacz sie z urzadzeniem
-
-
-                        }
-                    }
-
-                    //znaleziono urzadzenie trzeba jes sparowac i polaczyc sie z nim
-                    czyZnalezione = BluetoothSecurity.PairRequest(device.DeviceAddress, null);
-                    if (device.Authenticated)
-                    {
-                        client.SetPin(null);
-
-                        client.BeginConnect(device.DeviceAddress, BluetoothService.SerialPort, new System.AsyncCallback(Connect), device);
-                    }
-                }
-
-                if (czyZnalezione == true)
-                    break;
-
-            }
-        }
-
-        private void searchForPairedDevices()
-        {
-            this.paired = client.DiscoverDevices(255, false, true, false, false);
-        }
-
-        private void OknoBT_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            this.dataGridView1.Rows.Clear();
-            dataGridView1.Refresh();
+            connectAsServer();
+            updateUI(myGuid.ToString() + "No tak to wyglada");
         }
     }
 }
