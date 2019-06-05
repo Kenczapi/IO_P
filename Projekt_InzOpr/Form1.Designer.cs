@@ -36,6 +36,7 @@ namespace Projekt_InzOpr
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Okno));
             this.Player = new AxWMPLib.AxWindowsMediaPlayer();
             this.panelSterowanie = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.trackBarDzwiek = new Projekt_InzOpr.ColorSlider();
             this.buttonYT = new System.Windows.Forms.Button();
             this.buttonPoprzedni = new System.Windows.Forms.Button();
@@ -75,7 +76,8 @@ namespace Projekt_InzOpr
             this.yTBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.historiaYoutubeDataSet = new Projekt_InzOpr.HistoriaYoutubeDataSet();
             this.yTTableAdapter = new Projekt_InzOpr.HistoriaYoutubeDataSetTableAdapters.YTTableAdapter();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonLewo = new System.Windows.Forms.Button();
+            this.buttonPrawo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
             this.panelSterowanie.SuspendLayout();
             this.panelHistoria.SuspendLayout();
@@ -107,6 +109,8 @@ namespace Projekt_InzOpr
             this.panelSterowanie.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSterowanie.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panelSterowanie.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panelSterowanie.BackgroundImage")));
+            this.panelSterowanie.Controls.Add(this.buttonPrawo);
+            this.panelSterowanie.Controls.Add(this.buttonLewo);
             this.panelSterowanie.Controls.Add(this.button1);
             this.panelSterowanie.Controls.Add(this.trackBarDzwiek);
             this.panelSterowanie.Controls.Add(this.buttonYT);
@@ -126,6 +130,16 @@ namespace Projekt_InzOpr
             this.panelSterowanie.Size = new System.Drawing.Size(1256, 46);
             this.panelSterowanie.TabIndex = 1;
             this.panelSterowanie.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(214, 20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Bluetooth";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // trackBarDzwiek
             // 
@@ -158,6 +172,7 @@ namespace Projekt_InzOpr
             this.trackBarDzwiek.TickColor = System.Drawing.Color.White;
             this.trackBarDzwiek.TickDivide = 0F;
             this.trackBarDzwiek.Value = 30D;
+            this.trackBarDzwiek.ValueChanged += new System.EventHandler(this.trackBarDzwiek_ValueChanged);
             this.trackBarDzwiek.MouseCaptureChanged += new System.EventHandler(this.TrackBarDzwiek_MouseCaptureChanged);
             // 
             // buttonYT
@@ -478,15 +493,25 @@ namespace Projekt_InzOpr
             // 
             this.yTTableAdapter.ClearBeforeFill = true;
             // 
-            // button1
+            // buttonLewo
             // 
-            this.button1.Location = new System.Drawing.Point(214, 20);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Bluetooth";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonLewo.Location = new System.Drawing.Point(332, 20);
+            this.buttonLewo.Name = "buttonLewo";
+            this.buttonLewo.Size = new System.Drawing.Size(51, 23);
+            this.buttonLewo.TabIndex = 17;
+            this.buttonLewo.Text = "<<";
+            this.buttonLewo.UseVisualStyleBackColor = true;
+            this.buttonLewo.Click += new System.EventHandler(this.buttonLewo_Click);
+            // 
+            // buttonPrawo
+            // 
+            this.buttonPrawo.Location = new System.Drawing.Point(389, 20);
+            this.buttonPrawo.Name = "buttonPrawo";
+            this.buttonPrawo.Size = new System.Drawing.Size(51, 23);
+            this.buttonPrawo.TabIndex = 18;
+            this.buttonPrawo.Text = ">>";
+            this.buttonPrawo.UseVisualStyleBackColor = true;
+            this.buttonPrawo.Click += new System.EventHandler(this.buttonPrawo_Click);
             // 
             // Okno
             // 
@@ -567,6 +592,8 @@ namespace Projekt_InzOpr
         private DataGridViewTextBoxColumn momentZatrzymaniaDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
         private Button button1;
+        private Button buttonPrawo;
+        private Button buttonLewo;
     }
 }
 

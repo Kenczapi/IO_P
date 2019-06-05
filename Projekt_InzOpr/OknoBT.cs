@@ -22,10 +22,6 @@ namespace Projekt_InzOpr
 
     public partial class OknoBT : Form
     {
-        
-        Guid myGuid;
-        bool serverStarted = false;
-
         private void getGuid()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "myGuid.txt";
@@ -60,10 +56,91 @@ namespace Projekt_InzOpr
             }
         }
 
-        public OknoBT()
+
+        Guid myGuid;
+        bool serverStarted = false;
+
+        public bool isWorking { get; set; }
+
+        BluetoothAddress myMacAdress;
+
+        BluetoothEndPoint endPoint;
+        BluetoothClient client;
+        BluetoothComponent component;
+
+        private int STATE = 0;
+
+        List<BluetoothDeviceInfo> bt;
+
+        BluetoothDeviceInfo[] paired;
+
+        Stream aStream;
+
+        Okno okno;
+
+        public string elo;
+
+        public OknoBT(Okno o)
         {
+
+            okno = o;
             InitializeComponent();
             getGuid();
+
+            myMacAdress = GetMyMac();
+            if (myMacAdress == null)
+            {
+                MessageBox.Show("Prosze sprawdzic czy bluetooth jest wlaczony.");
+                this.Close();
+            }
+
+            endPoint = new BluetoothEndPoint(myMacAdress,BluetoothService.SerialPort);
+            client = new BluetoothClient(endPoint);
+            component = new BluetoothComponent(client);
+
+            isWorking = false;
+
+            this.buttonWlacz.Visible = false;
+            this.richTextBox1.Visible = false;
+        }
+
+
+        private void DiscoverDevicesFinish(object sender, DiscoverDevicesEventArgs e)
+        {
+            bt = new List<BluetoothDeviceInfo>();
+            foreach(BluetoothDeviceInfo dev in e.Devices)
+            {
+                bt.Add(dev);
+            }
+
+            dataGridView1.DataSource = null;
+            dataGridView1.Update();
+            dataGridView1.DataSource = e.Devices;
+            dataGridView1.Update();
+        }
+
+        private void searchForPaired()
+        {
+            paired = client.DiscoverDevices(255, false, true, false, false);
+
+            if (paired.Length > 0)
+                dataGridView1.DataSource = paired;
+        }
+
+        private void searchForNewDevices()
+        {
+            component.DiscoverDevicesComplete += new EventHandler<DiscoverDevicesEventArgs>(DiscoverDevicesFinish);
+            component.DiscoverDevicesAsync(255, true, true, true, true, null);
+        }
+
+        private BluetoothAddress GetMyMac()
+        {
+            if (BluetoothRadio.PrimaryRadio == null)
+            {
+                return null;
+            }
+
+            return BluetoothRadio.PrimaryRadio.LocalAddress;
         }
 
         private void connectAsServer()
@@ -91,29 +168,94 @@ namespace Projekt_InzOpr
             btListener.Start();
             BluetoothClient client = btListener.AcceptBluetoothClient();
             updateUI("Client has connected");
-            Stream aStream = client.GetStream();
+            aStream = client.GetStream();
 
             while (client.Connected)
             {
+
+                isWorking = true;
                 try
                 {
-                    byte[] received = new byte[1024];
-                    aStream.Read(received, 0, received.Length);
-                    updateUI("Received: " + Encoding.ASCII.GetString(received));
-                    byte[] sent = Encoding.ASCII.GetBytes("Thank you! " + DateTime.Now.ToString("hh:mm.ss"));
-                    aStream.Write(sent, 0, sent.Length);
+                    string tmp = GetData();
+                    okno.waitForData(tmp);
                 }
                 catch (IOException exc)
                 {
                     updateUI("Client disconnected.\n" + exc.ToString());
                 }
             }
+
+            isWorking = false;
         }
 
         private void buttonWlacz_Click(object sender, EventArgs e)
         {
             connectAsServer();
             updateUI(myGuid.ToString() + "No tak to wyglada");
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            foreach(BluetoothDeviceInfo dev in bt)
+            {
+                if(dev.DeviceAddress.Equals(dataGridView1[0,dataGridView1.CurrentRow.Index].Value) && dev.DeviceName.Equals(dataGridView1[1, dataGridView1.CurrentRow.Index].Value))
+                {//znalezione urzadzenie
+                    if (dev.Authenticated)
+                    {
+                        MessageBox.Show("Urzadzenie juz znane! Musisz tylko sie polaczyc z telefonu");
+                        return;
+                    }
+                    else
+                    {
+                        BluetoothSecurity.PairRequest(dev.DeviceAddress, null);                    
+                    }
+                }
+            }
+            MessageBox.Show("Nie znaleziono urzadzenia!");
+
+        }
+
+        public void SendData(string message)
+        {
+            byte[] sent = Encoding.ASCII.GetBytes(message);
+            aStream.Write(sent, 0, sent.Length);
+        }
+
+        public string GetData()
+        {
+            byte[] received = new byte[1024];
+            aStream.Read(received, 0, received.Length);
+
+            return Encoding.ASCII.GetString(received);
+        }
+
+        private void buttonSzukaj_Click(object sender, EventArgs e)
+        {
+            if(STATE == 0)
+            {
+
+                buttonWlacz_Click(null, null);
+
+                searchForPaired();
+                STATE++;
+                return;
+            }
+            else if(STATE == 1)
+            {
+                searchForNewDevices();
+                STATE++;
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Jezeli nadal nie znajduje Twojego urzadzenia, sprawdzy czy na pewno masz wlaczonego bluetooth'a");
+            }
+        }
+
+        private void OknoBT_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
     }
 }
