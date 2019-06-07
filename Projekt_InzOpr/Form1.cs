@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
+using InTheHand.Net.Bluetooth;
 
 namespace Projekt_InzOpr
 {
@@ -16,15 +17,15 @@ namespace Projekt_InzOpr
     {
         private bool czyYT = false;
 
-        private OknoBT bluetooth;
+        private OknoBT bluetooth = null;
+
+        private static bool czyPierwsze = true;
         public Okno()
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
             this.WindowState = FormWindowState.Normal;
             Player.stretchToFit = true;
-
-            bluetooth = new OknoBT();
             
             this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.ReadOnly = true;
@@ -83,13 +84,19 @@ namespace Projekt_InzOpr
             if (Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
                 Player.Ctlcontrols.pause();
-                buttonPlay.Text = "Play";
+                buttonPlay.Invoke(new Action(delegate () { buttonPlay.Text = "Play"; }
+                ));
+                if(bluetooth.isWorking)
+                    bluetooth.SendData("1");
                 timer1.Stop();
             }
             else //przycisk nacisniety gdy jest zapauzowane
             {
                 Player.Ctlcontrols.play();
-                buttonPlay.Text = "Pause";
+                buttonPlay.Invoke(new Action(delegate () { buttonPlay.Text = "Pause"; }
+                ));
+                if (bluetooth.isWorking)
+                    bluetooth.SendData("0");
                 timer1.Start();
             }
 
@@ -109,6 +116,9 @@ namespace Projekt_InzOpr
                     this.Text = Title;
                 }
                     CzyByloZmieniane = true;
+
+                if(bluetooth.isWorking)
+                    bluetooth.SendData("0");
             }
             else
                 return;
@@ -190,12 +200,15 @@ namespace Projekt_InzOpr
                 }
         }
 
-
         private void Timer1_Tick(object sender, EventArgs e)
         {
             trackBarCzas.Value = Player.Ctlcontrols.currentPosition;
-        
             lATime.Text = Player.Ctlcontrols.currentPositionString;
+
+            if (bluetooth.isWorking)
+            {
+                bluetooth.SendData(NoweDane());
+            }
 
             if (lATime.Text == lTime.Text)
             {
@@ -248,7 +261,7 @@ namespace Projekt_InzOpr
 
         private void TrackBarDzwiek_MouseCaptureChanged(object sender, EventArgs e)
         {
-            Player.settings.volume = (int)trackBarDzwiek.Value;
+           Player.settings.volume = (int)trackBarDzwiek.Value;
         }
 
         private void CheckPlayPauseButton()
@@ -283,6 +296,9 @@ namespace Projekt_InzOpr
                 e.Cancel = true;
                 return;
             }
+
+            bluetooth.SendData("Z");
+            bluetooth.Close();
 
         }
 
@@ -321,7 +337,87 @@ namespace Projekt_InzOpr
 
         private void button1_Click(object sender, EventArgs e)
         {
-            bluetooth.ShowDialog();
+            if (BluetoothRadio.PrimaryRadio != null)
+            {
+                if (czyPierwsze)
+                {
+                    bluetooth = new OknoBT(this);
+                }
+                bluetooth.Show();
+            }
+            else
+            {
+                MessageBox.Show("Prosze najpierw wlaczyc moduł bluetooth");
+            }
         }
+
+        private void trackBarDzwiek_ValueChanged(object sender, EventArgs e)
+        {
+            this.Player.settings.volume = Convert.ToInt16(trackBarDzwiek.Value);
+        }
+
+        private string NoweDane()
+        {
+            string str = Convert.ToInt16(trackBarDzwiek.Value) + " " + Convert.ToInt16(Player.Ctlcontrols.currentPosition) + " " + Player.Ctlcontrols.currentItem.durationString;
+            return str;
+        }
+
+        public void waitForData(string message)
+        {
+            if(message[0] == 'B')
+            {
+                ButtonPlay_Click(null, null);
+            }
+            else if (message[0] == 'V')
+            {
+                this.trackBarDzwiek.Value = Convert.ToInt16(message.Substring(5));
+            }
+            else if(message[0] == 'T')
+            {
+                this.Player.Ctlcontrols.currentPosition = this.trackBarCzas.Value = Convert.ToInt16(message.Substring(5));
+            }
+            else if (message == "lewo")
+            {
+                buttonLewo_Click(null, null);
+            }
+            else
+            {
+                buttonPrawo_Click(null, null);
+            }
+            
+        }
+
+        private void buttonLewo_Click(object sender, EventArgs e)
+        {
+            if(this.Player.playState == WMPLib.WMPPlayState.wmppsPlaying || this.Player.playState == WMPLib.WMPPlayState.wmppsPaused)
+            {
+
+                if(Player.Ctlcontrols.currentPosition - 10 > 0)
+                {
+                    trackBarCzas.Value = Player.Ctlcontrols.currentPosition -= 10;
+                    return;
+                }
+
+                trackBarCzas.Value = Player.Ctlcontrols.currentPosition = 0.005;
+
+            }
+        }
+
+        private void buttonPrawo_Click(object sender, EventArgs e)
+        {
+            if (this.Player.playState == WMPLib.WMPPlayState.wmppsPlaying || this.Player.playState == WMPLib.WMPPlayState.wmppsPaused)
+            {
+
+                if(Player.Ctlcontrols.currentPosition + 10 < Player.currentMedia.duration)
+                {
+                    trackBarCzas.Value = Player.Ctlcontrols.currentPosition += 10;
+                    return;
+                }
+
+                trackBarCzas.Value = Player.Ctlcontrols.currentPosition = Player.currentMedia.duration - 0.05;
+
+            }
+        }
+
     }
 }
