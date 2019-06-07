@@ -254,8 +254,11 @@ namespace Projekt_InzOpr
 
         private void OknoBT_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            if (myMacAdress != null)
+            {
+                e.Cancel = true;
             this.Hide();
+                            }
         }
     }
 }

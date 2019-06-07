@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
+using InTheHand.Net.Bluetooth;
 
 namespace Projekt_InzOpr
 {
@@ -17,14 +18,14 @@ namespace Projekt_InzOpr
         private bool czyYT = false;
 
         private OknoBT bluetooth = null;
+
+        private static bool czyPierwsze = true;
         public Okno()
         {
             InitializeComponent();
             this.Player.uiMode = "none"; //musi byc ustawione tutau, bo jak zmieniam we wlasciwosciach to nie dziala
             this.WindowState = FormWindowState.Normal;
             Player.stretchToFit = true;
-
-            bluetooth = new OknoBT(this);
             
             this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.ReadOnly = true;
@@ -83,7 +84,8 @@ namespace Projekt_InzOpr
             if (Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
             {
                 Player.Ctlcontrols.pause();
-                buttonPlay.Text = "Play";
+                buttonPlay.Invoke(new Action(delegate () { buttonPlay.Text = "Play"; }
+                ));
                 if(bluetooth.isWorking)
                     bluetooth.SendData("1");
                 timer1.Stop();
@@ -91,7 +93,8 @@ namespace Projekt_InzOpr
             else //przycisk nacisniety gdy jest zapauzowane
             {
                 Player.Ctlcontrols.play();
-                buttonPlay.Text = "Pause";
+                buttonPlay.Invoke(new Action(delegate () { buttonPlay.Text = "Pause"; }
+                ));
                 if (bluetooth.isWorking)
                     bluetooth.SendData("0");
                 timer1.Start();
@@ -113,6 +116,9 @@ namespace Projekt_InzOpr
                     this.Text = Title;
                 }
                     CzyByloZmieniane = true;
+
+                if(bluetooth.isWorking)
+                    bluetooth.SendData("0");
             }
             else
                 return;
@@ -291,6 +297,7 @@ namespace Projekt_InzOpr
                 return;
             }
 
+            bluetooth.SendData("Z");
             bluetooth.Close();
 
         }
@@ -330,8 +337,18 @@ namespace Projekt_InzOpr
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(bluetooth!=null)
+            if (BluetoothRadio.PrimaryRadio != null)
+            {
+                if (czyPierwsze)
+                {
+                    bluetooth = new OknoBT(this);
+                }
                 bluetooth.Show();
+            }
+            else
+            {
+                MessageBox.Show("Prosze najpierw wlaczyc moduł bluetooth");
+            }
         }
 
         private void trackBarDzwiek_ValueChanged(object sender, EventArgs e)
@@ -401,5 +418,6 @@ namespace Projekt_InzOpr
 
             }
         }
+
     }
 }

@@ -55,6 +55,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -69,11 +70,13 @@
             // 
             // buttonSzukaj
             // 
-            this.buttonSzukaj.Location = new System.Drawing.Point(12, 332);
+            this.buttonSzukaj.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonSzukaj.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonSzukaj.Location = new System.Drawing.Point(0, 344);
             this.buttonSzukaj.Name = "buttonSzukaj";
-            this.buttonSzukaj.Size = new System.Drawing.Size(75, 23);
+            this.buttonSzukaj.Size = new System.Drawing.Size(388, 23);
             this.buttonSzukaj.TabIndex = 4;
-            this.buttonSzukaj.Text = "Szukaj";
+            this.buttonSzukaj.Text = "Start";
             this.buttonSzukaj.UseVisualStyleBackColor = true;
             this.buttonSzukaj.Click += new System.EventHandler(this.buttonSzukaj_Click);
             // 
